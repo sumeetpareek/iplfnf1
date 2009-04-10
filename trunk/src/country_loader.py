@@ -1,5 +1,4 @@
 from google.appengine.ext import db
-import models
 
 class CountryLoader(Loader):
   def __init__(self):
