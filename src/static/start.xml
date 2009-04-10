@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>;
+<Module>;
+  <ModulePrefs title="Gifts" >;
+    <Require feature="opensocial-0.8"/>
+  </ModulePrefs>;
+  <Content type="html">;
+    <![CDATA[
+    <script>;
+gadgets.util.registerOnLoadHandler(init);
+ 
+function init() {
+  loadFriends();
+}
+ 
+function loadFriends() {
+  var req = opensocial.newDataRequest();
+ 
+  var viewerFriendsIdSpec = opensocial.newIdSpec({ "userId" : "VIEWER", "groupId" : "FRIENDS" });
+  var opt_params = {};
+  opt_params[opensocial.DataRequest.PeopleRequestFields.MAX] = 100;
+  req.add(req.newFetchPeopleRequest(viewerFriendsIdSpec, opt_params), 'viewerFriends');
+  req.send(onLoadFriends);
+}
+ 
+function onLoadFriends(data) {
+  var viewerFriends = data.get('viewerFriends').getData();
+ 
+  html = new Array();
+  html.push('<select id="person">;');
+  viewerFriends.each(function(person) {
+    html.push('<option value="' + person.getId() + '">;' + person.getDisplayName() + "</option>;");
+  });
+  html.push('</select>;');
+  document.getElementById('friends').innerHTML = html.join(''); 
+}
+      </script>;
+      <span id="friends"></span>;'''
+    ]]>;
+  </Content>;
+</Module>;
