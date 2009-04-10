@@ -1,6 +1,5 @@
 from google.appengine.ext import db
 
-
 class Club(db.Model):
     name = db.StringProperty()
     owner = db.StringProperty()
@@ -25,7 +24,7 @@ class Player(db.Model):
     battype = db.StringProperty()
     bowltype = db.StringProperty()
     status = db.IntegerProperty()
-    price = db.IntegerProperty()
+    price = db.FloatProperty()
 
 class User(db.Model):
     id = db.StringProperty()
