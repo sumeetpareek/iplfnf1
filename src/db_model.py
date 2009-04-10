@@ -1,7 +1,9 @@
 from google.appengine.ext import db
 
+
 class Club(db.Model):
     name = db.StringProperty()
+    captain = db.StringProperty()
     owner = db.StringProperty()
     city = db.StringProperty()
     total_matches = db.IntegerProperty()
@@ -25,6 +27,8 @@ class Player(db.Model):
     bowltype = db.StringProperty()
     status = db.IntegerProperty()
     price = db.FloatProperty()
+    club_name = db.StringProperty()
+    country_name = db.StringProperty()
 
 class User(db.Model):
     id = db.StringProperty()
