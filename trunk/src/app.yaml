@@ -8,5 +8,11 @@ handlers:
   script: $PYTHON_LIB/google/appengine/ext/remote_api/handler.py
   login: admin
   
+- url: /csv
+  static_dir: csv
+
+- url: /static
+  static_dir: static  
+
 - url: /.*
   script: fnf_main.py

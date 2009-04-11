@@ -1,31 +1,6 @@
 from google.appengine.ext import db
 import datetime
 
-class CountryLoader(Loader):
-  def __init__(self):
-    Loader.__init__(self, 'Country',
-                    [('name', str),
-                     ('misc', str)
-                     ])
-
-class ClubLoader(Loader):
-  def __init__(self):
-    Loader.__init__(self, 'Club',
-                    [('name', str),
-                     ('city', str),
-                     ('short_name', str),
-                     ('captain_name', str),
-                     ('owner', str),
-                     ('matches_total', int),
-                     ('matches_won', int),
-                     ('matches_lost', int),
-                     ('matches_tie', int),
-                     ('matches_cancelled', int),
-                     ('highest_score', int),
-                     ('avg_score', float),
-                     ('avg_opp_score', float),
-                     ])
-    
 class Club(db.Model):
     name = db.StringProperty()
     owner = db.StringProperty()
@@ -45,20 +20,6 @@ class Country(db.Model):
     name = db.StringProperty()
     misc = db.StringProperty()
 
-class PlayerLoader(Loader):
-    def __init__(self):
-      Loader.__init__(self, 'Player',
-                    [('name', str),
-                     ('dob', lambda x: datetime.datetime.strptime(x, '%m/%d/%y').date()),
-                     ('country_name', str),
-                     ('battype', str),
-                     ('bowltype', str),
-                     ('type', str),
-                     ('club_name', str),
-                     ('status', int),
-                     ('price', float),
-                     ])
-    
 class Player(db.Model):
     name = db.StringProperty()
     type = db.StringProperty()
@@ -85,7 +46,7 @@ class Fact(db.Model):
     content = db.TextProperty()
     total_vote_up = db.IntegerProperty()
     total_vote_down = db.IntegerProperty()
-    timestamp = db.TimeProperty()
+    timestamp = db.TimeProperty(auto_now_add=True)
 
 class Fact_Player(db.Model):
     fact = db.ReferenceProperty(Fact)
@@ -99,7 +60,7 @@ class Fact_Vote(db.Model):
     fact = db.ReferenceProperty(Fact)
     voter = db.ReferenceProperty(User)
     vote = db.IntegerProperty()
-    timestamp = db.TimeProperty()
+    timestamp = db.TimeProperty(auto_now_add=True)
     
 class Match(db.Model):
     stadium = db.StringProperty()
@@ -148,3 +109,46 @@ class User_Team(db.Model):
     player_9 = db.ReferenceProperty(Player,collection_name="user_team_player_9")
     player_10 = db.ReferenceProperty(Player,collection_name="user_team_player_10")
     player_11 = db.ReferenceProperty(Player,collection_name="user_team_player_11")
+
+
+## Uncomment loader classes to load data to local/remote datastore and then update all missing data
+
+
+#class PlayerLoader(Loader):
+#    def __init__(self):
+#      Loader.__init__(self, 'Player',
+#                    [('name', str),
+#                     ('dob', lambda x: datetime.datetime.strptime(x, '%m/%d/%y').date()),
+#                     ('country_name', str),
+#                     ('battype', str),
+#                     ('bowltype', str),
+#                     ('type', str),
+#                     ('club_name', str),
+#                     ('status', int),
+#                     ('price', float),
+#                     ])
+#      
+#class CountryLoader(Loader):
+#  def __init__(self):
+#    Loader.__init__(self, 'Country',
+#                    [('name', str),
+#                     ('misc', str)
+#                     ])
+#
+#class ClubLoader(Loader):
+#  def __init__(self):
+#    Loader.__init__(self, 'Club',
+#                    [('name', str),
+#                     ('city', str),
+#                     ('short_name', str),
+#                     ('captain_name', str),
+#                     ('owner', str),
+#                     ('matches_total', int),
+#                     ('matches_won', int),
+#                     ('matches_lost', int),
+#                     ('matches_tie', int),
+#                     ('matches_cancelled', int),
+#                     ('highest_score', int),
+#                     ('avg_score', float),
+#                     ('avg_opp_score', float),
+#                     ])
