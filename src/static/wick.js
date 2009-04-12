@@ -135,6 +135,11 @@ function handleFocus(event) {
 	if (focEl = isWithinNode(eL,null,"wickEnabled",null,null)) { //kaka multiple?
 	if (!siw || (siw && !siw.selectingSomething)) processSmartInput(focEl);
 	}
+	//kaka custom
+	//alert('focu');
+	//if (isWithinNode(eL,null,"wickPlayer",null,null)) {window.wickType = "wickPlayer";}
+	//if (isWithinNode(eL,null,"wickClub",null,null)) {window.wickType = "wickClub";}
+	//if (isWithinNode(eL,null,"wickCountry",null,null)) {window.wickType = "wickCountry";}
 }//handleFocus()
 
 function handleBlur(event) {
@@ -252,23 +257,19 @@ return a;
 }//getUserInputBase()
 
 function runMatchingLogic(userInput, standalone) {
+
 	userInput = simplify(userInput);
 	uifc = userInput.charAt(0).toLowerCase();
 	if (uifc == '"') uifc = (n = userInput.charAt(1)) ? n.toLowerCase() : "z";
 	if (standalone) userInput = uifc;
 	if (siw) siw.matchCollection = new Array();
-	pointerToCollectionToUse = curr_coll;
-	if (siw && siw.revisedCollection && (siw.revisedCollection.length > 0) && siw.lastUserInput && (userInput.indexOf(siw.lastUserInput) == 0)) {
-		pointerToCollectionToUse = siw.revisedCollection;
-	} else if (collectionIndex[userInput] && (collectionIndex[userInput].length > 0)) {
-		pointerToCollectionToUse = collectionIndex[userInput];
-	} else if (collectionIndex[uifc] && (collectionIndex[uifc].length > 0)) {
-		pointerToCollectionToUse = collectionIndex[uifc];
-	} else if (siw && (userInput.length == 1) && (!collectionIndex[uifc])) {
-		siw.buildIndex = true;
-	} else if (siw) {
-		siw.buildIndex = false;
-	}
+	//kaka custom
+	pointerToCollectionToUse = null;
+	if (siw.inputBox.id == "wickPlayer") {pointerToCollectionToUse = all_player_coll;}
+	if (siw.inputBox.id == "wickClub") {pointerToCollectionToUse = all_club_coll;}
+	if (siw.inputBox.id == "wickCountry") {pointerToCollectionToUse = all_country_coll;}
+	
+//kaka cut
 	
 	tempCollection = new Array();
 
@@ -444,7 +445,7 @@ allinputs[z] = texts[y];
 z++;
 y++;
 }//
-
+//kaka back
 for (i=0; i < allinputs.length;i++) {
 	if ((c = allinputs[i].className) && (c == "wickEnabled")) {
 		allinputs[i].setAttribute("autocomplete","OFF");
@@ -480,8 +481,8 @@ document.write (
 //note: instruct users to the fact that no commas should be present in entries.
 //it would make things insanely messy.
 //this is why i'm filtering commas here:
-//for (x=0;x<curr_coll.length;x++) {
-//curr_coll[x] = curr_coll[x].replace(/\,/gi,'');
+//for (x=0;x<all_player_coll.length;x++) {
+//all_player_coll[x] = all_player_coll[x].replace(/\,/gi,'');
 //}//
 
 collectionIndex = new Array();

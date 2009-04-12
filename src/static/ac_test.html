@@ -23,11 +23,6 @@ $(document).ready(function(){
     dataType: "json",
     success: onLoadAllPlayer
   });
-
-  $("#all_counrty_coll").focus(function(){alert('ghgjh');curr_coll=all_country_coll});
-  $("#all_club_coll").focus(function(){curr_coll=all_club_coll});
-  $("#all_player_coll").focus(function(){curr_coll=all_player_coll});
-
 });
 
 function onLoadAllCountry(data, textStatus) {
@@ -52,11 +47,11 @@ function onLoadAllPlayer(data, textStatus) {
 </script>
 </head>
 <body>
-<div>I am God!!</div>
+<div id="god">I am God!!</div>
 <form>
-<div id="all_country_coll">Country:<input class="wickEnabled" type="text" size="30" /></div>
-<div id="all_club_coll">Club:<input class="wickEnabled" type="text" size="30" /></div>
-<div id="all_player_coll">Player:<input class="wickEnabled" type="text" size="30" /></div>
+<div id="all_country_coll">Country:<input id="wickCountry" class="wickEnabled wickCountry" type="text" size="30" /></div>
+<div id="all_club_coll">Club:<input id="wickClub" class="wickEnabled wickClub" type="text" size="30" /></div>
+<div id="all_player_coll">Player:<input id="wickPlayer" class="wickEnabled wickPlayer" type="text" size="30" /></div>
 <script type="text/javascript" language="JavaScript" src="wick.js"></script>
 </body>
 </html>
