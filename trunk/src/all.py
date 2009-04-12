@@ -9,13 +9,13 @@ class AllServer(webapp.RequestHandler):
   
   def get(self):
     """Handle GET requests."""
-    if self.request.path.startswith('/all/country'):
+    if self.request.path.__eq__('/all/country'):
       self._get_all_country()
-    if self.request.path.startswith('/all/club'):
+    if self.request.path.__eq__('/all/club'):
       self._get_all_club()
-    if self.request.path.startswith('/all/player'):
+    if self.request.path.__eq__('/all/player'):
       self._get_all_player()
-    if self.request.path.startswith('/all/user'):
+    if self.request.path.__eq__('/all/user'):
       self._get_all_user()
       
   def _get_all_country(self):

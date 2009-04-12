@@ -7,27 +7,23 @@ class DummyServer(webapp.RequestHandler):
  
   def get(self):
     """Handle GET requests."""
-#    if (self.request.path.startswith('/data/player_update_status')):
-#      print 'i work'
-#    else:
-#      print 'i am an asshole'
-    if self.request.path.startswith('/data/dummy_user'):
+    if self.request.path.__eq__('/data/dummy_user'):
       self._gen_user()
-    elif self.request.path.startswith('/data/dummy_fact'):
+    elif self.request.path.__eq__('/data/dummy_fact'):
       self._gen_fact()
-    elif self.request.path.startswith('/data/dummy_fact_player'):
+    elif self.request.path.__eq__('/data/dummy_fact_player'):
       self._gen_fact_player()
-    elif self.request.path.startswith('/data/dummy_fact_club'):
+    elif self.request.path.__eq__('/data/dummy_fact_club'):
       self._gen_fact_club()
-    elif self.request.path.startswith('/data/dummy_fact_vote'):
+    elif self.request.path.__eq__('/data/dummy_fact_vote'):
       self._gen_fact_vote()
-    elif self.request.path.startswith('/data/player_update_age'):
+    elif self.request.path.__eq__('/data/player_update_age'):
       self._update_age()
-    elif self.request.path.startswith('/data/player_update_status'):
+    elif self.request.path.__eq__('/data/player_update_status'):
       self._update_status()
-    elif self.request.path.startswith('/data/player_update_clubref'):
+    elif self.request.path.__eq__('/data/player_update_clubref'):
       self._update_clubref()
-    elif self.request.path.startswith('/data/player_update_countryref'):
+    elif self.request.path.__eq__('/data/player_update_countryref'):
       self._update_countryref()
 
   def _gen_user(self):
