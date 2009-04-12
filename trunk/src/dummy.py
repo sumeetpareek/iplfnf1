@@ -2,7 +2,7 @@ from db_model import *
 from google.appengine.ext import webapp
 
 
-class dummyServer(webapp.RequestHandler):
+class DummyServer(webapp.RequestHandler):
   """Handles requests to /admin URLs and delegates to the Admin class."""
  
   def get(self):
