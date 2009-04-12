@@ -15,6 +15,8 @@ class AllServer(webapp.RequestHandler):
       self._get_all_club()
     if self.request.path.startswith('/all/player'):
       self._get_all_player()
+    if self.request.path.startswith('/all/user'):
+      self._get_all_user()
       
   def _get_all_country(self):
 #    print 'check'
@@ -61,6 +63,13 @@ class AllServer(webapp.RequestHandler):
               'price' : player.price,
               'country_name' : player.country_name,
               'club_name' : player.club_name,}
-      datetime
       player2return.append(item)
     self.response.out.write(json.write(player2return))
+    
+  def _get_all_user(self):
+    user2return = []
+    for user in User.all():
+      item = {'key' : str(user.key()),
+              'userid' : user.id}
+      user2return.append(item)
+    self.response.out.write(json.write(user2return))
