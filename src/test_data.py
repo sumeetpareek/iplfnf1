@@ -22,6 +22,8 @@ class Admin:
     print 'fuck '
     for player in Player.all():
       print player.name+":"+player.type+":"+player.club.name+":"+player.country.name+":"+str(player.age)+":"+str(player.status)+":"+str(player.price)
+    for fact in Fact.all():
+      print fact.creator.id+":"+fact.content+":"+str(fact.total_vote_up)+":"+str(fact.total_vote_down)+":"+str(fact.timestamp)
 #    for player in Player.all():
 #      if (player.country_name=='West India'):
 #        player.country_name='West Indies'

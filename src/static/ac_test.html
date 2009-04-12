@@ -1,0 +1,63 @@
+<html>
+<head>
+<title>autocomplete temp</title>
+<link rel="stylesheet" type="text/css" href="wick.css" />
+<script type="text/javascript" language="JavaScript" src="jquery.js"></script>
+<script>
+$(document).ready(function(){
+  $.ajax({
+    type: "GET",
+    url: "http://localhost:8080/all/country",
+    dataType: "json",
+    success: onLoadAllCountry
+  });
+  $.ajax({
+    type: "GET",
+    url: "http://localhost:8080/all/club",
+    dataType: "json",
+    success: onLoadAllClub
+  });
+  $.ajax({
+    type: "GET",
+    url: "http://localhost:8080/all/player",
+    dataType: "json",
+    success: onLoadAllPlayer
+  });
+
+  $("#all_counrty_coll").focus(function(){alert('ghgjh');curr_coll=all_country_coll});
+  $("#all_club_coll").focus(function(){curr_coll=all_club_coll});
+  $("#all_player_coll").focus(function(){curr_coll=all_player_coll});
+
+});
+
+function onLoadAllCountry(data, textStatus) {
+  window.all_country_full = data;
+  window.all_country_coll = [];
+  $.each(data, function(i,val){all_country_coll[i]=val.country_name;});
+}
+
+function onLoadAllClub(data, textStatus) {
+  window.all_club_full = data;
+  window.all_club_coll = [];
+  $.each(data, function(i,val){all_club_coll[i]=val.name;});
+}
+
+function onLoadAllPlayer(data, textStatus) {
+  window.all_player_full = data;
+  window.all_player_coll = [];
+  $.each(data, function(i,val){all_player_coll[i]=val.name;});
+}
+
+
+</script>
+</head>
+<body>
+<div>I am God!!</div>
+<form>
+<div id="all_country_coll">Country:<input class="wickEnabled" type="text" size="30" /></div>
+<div id="all_club_coll">Club:<input class="wickEnabled" type="text" size="30" /></div>
+<div id="all_player_coll">Player:<input class="wickEnabled" type="text" size="30" /></div>
+<script type="text/javascript" language="JavaScript" src="wick.js"></script>
+</body>
+</html>
+
