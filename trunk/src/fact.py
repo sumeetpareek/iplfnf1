@@ -32,7 +32,7 @@ class FactServer(webapp.RequestHandler):
             item = {'key' : str(curr_fact.key()),
                     'content' : str(curr_fact.content),
                     'timestamp' : str(curr_fact.timestamp),
-                    'creator' : str(curr_fact.creator),
+                    'creator' : str(curr_fact.creator.key()),
                     'voteup' : curr_fact.total_vote_up,
                     'votedown' : curr_fact.total_vote_down}
             fact2return.append(item)
@@ -44,7 +44,7 @@ class FactServer(webapp.RequestHandler):
             item = {'key' : str(curr_fact.key()),
                     'content' : str(curr_fact.content),
                     'timestamp' : str(curr_fact.timestamp),
-                    'creator' : str(curr_fact.creator),
+                    'creator' : str(curr_fact.creator.key()),
                     'voteup' : curr_fact.total_vote_up,
                     'votedown' : curr_fact.total_vote_down}
             fact2return.append(item)
@@ -56,8 +56,45 @@ class FactServer(webapp.RequestHandler):
           item = {'key' : str(curr_fact.key()),
                   'content' : str(curr_fact.content),
                   'timestamp' : str(curr_fact.timestamp),
-                  'creator' : str(curr_fact.creator),
+                  'creator' : str(curr_fact.creator.key()),
                   'voteup' : curr_fact.total_vote_up,
                   'votedown' : curr_fact.total_vote_down}
           fact2return.append(item)
-      self.response.out.write(json.write(fact2return))        
+      self.response.out.write(json.write(fact2return))
+      
+    # if the querytype for getting facts is 'user-added'
+    elif fact_query == 'user-added':
+      user_q = db.Query(User).filter('id =', user_id)
+      curr_user = user_q.get()
+      q = db.Query(Fact).filter('creator =',curr_user.key()).order('-timestamp')
+      result = q.fetch(10,int(fact_page)-1)
+      for curr_fact in result:
+        item = {'key' : str(curr_fact.key()),
+                'content' : str(curr_fact.content),
+                'timestamp' : str(curr_fact.timestamp),
+                'creator' : str(curr_fact.creator.key()),
+                'voteup' : curr_fact.total_vote_up,
+                'votedown' : curr_fact.total_vote_down}
+        fact2return.append(item)
+      self.response.out.write(json.write(fact2return))
+      
+    # if the querytype for getting facts is 'user-liked'
+    elif fact_query == 'user-liked' or fact_query == 'user-disliked':
+      # find who the user is
+      user_q = db.Query(User).filter('id =', user_id)
+      curr_user = user_q.get()
+      # get the fact keys for which the user has voted up/down depending on fact_query type
+      if fact_query == 'user-liked':
+        vote_q = db.Query(Fact_Vote).filter('voter =',curr_user.key()).filter('vote =',1).order('-timestamp')
+      elif fact_query == 'user-disliked':
+        vote_q = db.Query(Fact_Vote).filter('voter =',curr_user.key()).filter('vote =',-1).order('-timestamp')
+      vote_result = vote_q.fetch(10,int(fact_page)-1)
+      for curr_vote in vote_result:
+        item = {'key' : str(curr_vote.fact.key()),
+                'content' : str(curr_vote.fact.content),
+                'timestamp' : str(curr_vote.fact.timestamp),
+                'creator' : str(curr_vote.fact.creator.key()),
+                'voteup' : curr_vote.fact.total_vote_up,
+                'votedown' : curr_vote.fact.total_vote_down}
+        fact2return.append(item)
+      self.response.out.write(json.write(fact2return))
