@@ -1,5 +1,8 @@
-from db_model import *
+from google.appengine.ext import db
 from google.appengine.ext import webapp
+from db_fact import *
+from db_fantasy import *
+from db_general import *
 import json
 import datetime
 

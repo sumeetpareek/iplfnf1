@@ -1,8 +1,10 @@
-from db_model import *
+from db_fact import *
+from db_fantasy import *
+from db_general import *
 from google.appengine.ext import webapp
 import logging
 import json
-from db_model import Fact_Player
+
 class FactServer(webapp.RequestHandler):
    
   def post(self):
