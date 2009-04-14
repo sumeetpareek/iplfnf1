@@ -1,4 +1,6 @@
-from db_model import *
+from db_fact import *
+from db_fantasy import *
+from db_general import *
 from google.appengine.ext import webapp
 from google.appengine.ext import db
 import json

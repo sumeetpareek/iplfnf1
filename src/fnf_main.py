@@ -4,7 +4,9 @@ import wsgiref.handlers
 # AppEngine imports
 from google.appengine.ext import webapp
  
-# OpenSocial Gifts imports
+from db_fact import *
+from db_fantasy import *
+from db_general import *
 import test_data
 import dummy
 import all
