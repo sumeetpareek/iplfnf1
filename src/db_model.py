@@ -94,7 +94,7 @@ class Match_Performance(db.Model):
     feilding_points = db.IntegerProperty()
 
 class User_Team(db.Model):
-    user = db.ReferenceProperty()
+    user = db.ReferenceProperty(User)
     mid = db.ReferenceProperty(Match)
     name = db.StringProperty()
     created_at = db.TimeProperty()

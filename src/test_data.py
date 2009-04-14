@@ -1,6 +1,4 @@
-from db_model import Player
-from db_model import Club
-from db_model import Country
+from db_model import *
 from google.appengine.ext import webapp
 from google.appengine.ext import db
 import json
@@ -19,11 +17,14 @@ class Admin:
   """init the db"""
 
   def initPlayer(self):
-    print 'fuck '
-    for player in Player.all():
-      print player.name+":"+player.type+":"+player.club.name+":"+player.country.name+":"+str(player.age)+":"+str(player.status)+":"+str(player.price)
-    for fact in Fact.all():
-      print fact.creator.id+":"+fact.content+":"+str(fact.total_vote_up)+":"+str(fact.total_vote_down)+":"+str(fact.timestamp)
+    print 'do something'
+#    c = 0
+#    for player in Fact_Player.all():
+#      player.delete()
+#      c+=1
+#    print c
+#    for fact in Fact.all():
+#      print fact.creator.id+":"+fact.content+":"+str(fact.total_vote_up)+":"+str(fact.total_vote_down)+":"+str(fact.timestamp)
 #    for player in Player.all():
 #      if (player.country_name=='West India'):
 #        player.country_name='West Indies'
