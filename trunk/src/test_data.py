@@ -25,8 +25,11 @@ class Admin:
 #    r=q.get()
 #    print json.write(r.dynamic_properties())
     c = 0
-    for player in User.all():
-      print player.id
+    for fact in Fact.all():
+      fact.delete()
+#      print player.name
+#      print player.dob
+#      print '--'
       c+=1
     print c
 #    for fact in Fact.all():
