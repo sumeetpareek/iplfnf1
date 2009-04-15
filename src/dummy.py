@@ -79,8 +79,6 @@ class DummyServer(webapp.RequestHandler):
     self.response.out.write('all facts are now tagged with clubs')
     
   def _gen_fact_vote(self):
-    for fv in Fact_Vote.all():
-      fv.delete()
     count_fvf =0
     count_fvu =0
     query = db.Query(Fact)
@@ -89,18 +87,21 @@ class DummyServer(webapp.RequestHandler):
     ulist = query.fetch(20, 0)
     for f in flist:
       count_fvu = 0
+      total_up = f.total_vote_up
+      total_down = f.total_vote_down
       while(count_fvu<20):
         u = ulist[count_fvu]
         if(count_fvu<=count_fvf):
           v = 1
+          total_up+=1
         else:
           v=-1
-        fv = Fact_Vote()
-        fv.fact = f
-        fv.voter = u
-        fv.vote = v
+          total_down+=1
+        f.total_vote_up = total_up
+        f.total_vote_down = total_down
+        setattr(f, str(u.key()), v)
         count_fvu+=1
-        fv.put()
+        f.put()
       count_fvf+=1
     self.response.out.write('all facts have now been voted upon')
     
