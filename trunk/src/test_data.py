@@ -12,29 +12,16 @@ class AdminServer(webapp.RequestHandler):
     """Handle GET requests."""
     self.response.out.write('Welcome to the admin webapp')
     admin = Admin()
-    admin.initPlayer()
+    admin.init()
     self.response.out.write('db refreshed')
 
 class Admin:
   """init the db"""
 
-  def initPlayer(self):
-    print 'do something'
-#    v='agdpcGxmbmYxcgwLEgZQbGF5ZXIYEww'
-#    q=db.Query(Fact).filter(v+' =', True)
-#    r=q.get()
-#    print json.write(r.dynamic_properties())
-    c = 0
-    for fact in Fact.all():
-      fact.delete()
-#      print player.name
-#      print player.dob
-#      print '--'
-      c+=1
-    print c
-#    for fact in Fact.all():
-#      print fact.creator.id+":"+fact.content+":"+str(fact.total_vote_up)+":"+str(fact.total_vote_down)+":"+str(fact.timestamp)
-#    for player in Player.all():
-#      if (player.country_name=='West India'):
-#        player.country_name='West Indies'
-#        player.put()
+  def init(self):
+    for player in Player.all():
+      if player.name == 'sumeet':
+        player.delete()
+    for user in User.all():
+      if user.id == 'sumeet':
+        user.delete()
