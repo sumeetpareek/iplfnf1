@@ -9,23 +9,14 @@ class DummyServer(webapp.RequestHandler):
  
   def get(self):
     """Handle GET requests."""
-    if self.request.path.__eq__('/data/dummy_user'):
+    if self.request.path.__eq__('/data/dummy_and_update'):
       self._gen_user()
-    elif self.request.path.__eq__('/data/dummy_fact'):
       self._gen_fact()
-    elif self.request.path.__eq__('/data/dummy_fact_player'):
       self._gen_fact_player()
-    elif self.request.path.__eq__('/data/dummy_fact_club'):
       self._gen_fact_club()
-    elif self.request.path.__eq__('/data/dummy_fact_vote'):
       self._gen_fact_vote()
-    elif self.request.path.__eq__('/data/player_update_age'):
       self._update_age()
-    elif self.request.path.__eq__('/data/player_update_status'):
-      self._update_status()
-    elif self.request.path.__eq__('/data/player_update_clubref'):
       self._update_clubref()
-    elif self.request.path.__eq__('/data/player_update_countryref'):
       self._update_countryref()
 
   def _gen_user(self):
@@ -60,39 +51,31 @@ class DummyServer(webapp.RequestHandler):
     self.response.out.write('deleted and recreated all fact data')
     
   def _gen_fact_player(self):
-    for fp in Fact_Player.all():
-      fp.delete()
     count_fp =0
     query = db.Query(Fact)
     flist = query.fetch(20, 0)
     query = db.Query(Player)
     plist = query.fetch(20, 0)
-    while(count_fp<20):
-      fp = Fact_Player()
-      fact=flist[count_fp]
+    for fact in flist:
       player=plist[count_fp]
-      fp.fact = fact
-      fp.player = player
+      pkey = player.key()
+      setattr(fact, str(pkey), True)
       count_fp+=1
-      fp.put()
+      fact.put()
     self.response.out.write('all facts are now tagged with players')
     
   def _gen_fact_club(self):
-    for fp in Fact_Club.all():
-      fp.delete()
     count_fc =0
     query = db.Query(Fact)
     flist = query.fetch(20, 0)
     query = db.Query(Club)
-    plist = query.fetch(8, 0)
-    while(count_fc<20):
-      fp = Fact_Club()
-      fact=flist[count_fc]
-      player=plist[count_fc%8]
-      fp.fact = fact
-      fp.club = player
+    clist = query.fetch(20, 0)
+    for fact in flist:
+      club=clist[count_fc%8]
+      ckey = club.key()
+      setattr(fact, str(ckey), True)
       count_fc+=1
-      fp.put()
+      fact.put()
     self.response.out.write('all facts are now tagged with clubs')
     
   def _gen_fact_vote(self):
@@ -120,13 +103,6 @@ class DummyServer(webapp.RequestHandler):
         fv.put()
       count_fvf+=1
     self.response.out.write('all facts have now been voted upon')
-    
-  def _update_status(self):
-    for p in Player.all():
-      if (p.status == 0):
-        p.status = 1
-        p.put()
-    self.response.out.write('player status set')
     
   def _update_countryref(self):
     for player in Player.all():

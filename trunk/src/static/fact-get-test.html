@@ -36,7 +36,7 @@ $(document).ready(function(){
     type: "POST",
     url: "http://localhost:8080/fact/get",
     dataType: "text",
-    data: ({user_id : $("#userid").val(), fact_query : $("#fact-query").val(), fact_tag:$("#fact-tag").val(),fact_page:$("#fact-page").val()}),
+    data: ({user_id : $("#userid").val(), fact_query : $("#fact-query").val(), fact_tags:$("#fact-tags").val(),fact_page:$("#fact-page").val()}),
     success: onFactGet
   });
   return false;
@@ -68,7 +68,7 @@ function onLoadAllClub(data, textStatus) {
 function onLoadAllPlayer(data, textStatus) {
   window.all_player_full = data;
   window.all_player_coll = [];
-  $.each(data, function(i,val){all_player_coll[i]=val.name;$("#fact-tag").append("<option value=\""+val.key+"\">"+val.name+"</option>");});
+  $.each(data, function(i,val){all_player_coll[i]=val.name;$("#fact-tags").append("<option value=\""+val.key+"\">"+val.name+"</option>");});
 }
 
 function onFactGet(data, textStatus) {
@@ -85,7 +85,7 @@ function onFactGet(data, textStatus) {
 Get Facts: 
 User=<select id="userid" name="userid"/></select>
 Querytype=<select id="fact-query" name="fact-query"/><option value="latest">Latest</option><option value="most-liked">Most Liked</option><option value="most-disliked">Most Disiked</option><option value="user-added">Added by you</option><option value="friend-added">Added by friends</option><option value="user-liked">Liked by you</option><option value="user-disliked">Disliked by you</option></select>
-Tag=<select id="fact-tag" name="fact-tag"/><option value="">None</option></select>
+Tag=<select id="fact-tags" name="fact-tags" multiple="multiple"/><option value="">None</option></select>
 Page=<select id="fact-page" name="fact-page"/><option value="1">01</option><option value="2">02</option><option value="3">03</option><option value="4">04</option><option value="5">05</option></select>
 <input id="fact-get-submit" name="fact-get-submit" type="submit" value="Go">
 </div>

@@ -20,11 +20,15 @@ class Admin:
 
   def initPlayer(self):
     print 'do something'
-#    c = 0
-#    for player in Fact_Player.all():
-#      player.delete()
-#      c+=1
-#    print c
+#    v='agdpcGxmbmYxcgwLEgZQbGF5ZXIYEww'
+#    q=db.Query(Fact).filter(v+' =', True)
+#    r=q.get()
+#    print json.write(r.dynamic_properties())
+    c = 0
+    for player in User.all():
+      print player.id
+      c+=1
+    print c
 #    for fact in Fact.all():
 #      print fact.creator.id+":"+fact.content+":"+str(fact.total_vote_up)+":"+str(fact.total_vote_down)+":"+str(fact.timestamp)
 #    for player in Player.all():
