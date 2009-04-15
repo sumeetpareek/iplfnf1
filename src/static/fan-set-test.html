@@ -34,9 +34,9 @@ $(document).ready(function(){
   $("form#fact-get-form").submit(function(){
   $.ajax({
     type: "POST",
-    url: "http://localhost:8080/fact/get",
+    url: "http://localhost:8080/fantasy/set",
     dataType: "text",
-    data: ({user_id : $("#userid").val(), fact_query : $("#fact-query").val(), fact_tags:$("#fact-tags").val(),fact_page:$("#fact-page").val()}),
+    data: ({userid : $("#userid").val(), team_players : $("#fact-tags").val()}),
     success: onFactGet
   });
   return false;
@@ -80,7 +80,7 @@ function onFactGet(data, textStatus) {
 </script>
 </head>
 <body>
-<form id="fact-get-form" action="http://localhost:8080/fact/getty" method="POST">
+<form id="fact-get-form" action="http://localhost:8080/fantasy/set" method="POST">
 <div> 
 User=<select id="userid" name="userid"/></select>
 Players:<select id="fact-tags" name="team-players" multiple="multiple"/><option value="">None</option></select>

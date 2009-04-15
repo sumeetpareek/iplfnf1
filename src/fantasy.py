@@ -21,7 +21,7 @@ class FantasyServer(webapp.RequestHandler):
     for team in User_Team.all():
       team.delete()
     team_creator = self.request.get("userid")
-    req_players = self.request.get("team-players", allow_multiple=True)
+    req_players = self.request.get("team_players", allow_multiple=True)
     team_creator_entity = db.Query(User).filter('id =', team_creator).get()
     
     new_team = User_Team()
