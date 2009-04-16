@@ -1,0 +1,43 @@
+ul, li {
+margin:0;
+padding:0;
+}
+#fnf-wp {
+border:1px solid #BBBBBB;
+height:1000px;
+margin:20px auto;
+width:835px;
+}
+#fnf-header {
+}
+.fnf-tab-bar {
+background:#59B0F0 none repeat scroll 0 0;
+margin:0;
+padding:0;
+}
+.fnf-tab-menu {
+padding:20px 20px 0;
+}
+.fnf-tab-menu li {
+display:inline;
+list-style-image:none;
+list-style-type:none;
+}
+.fnf-tab-menu li a {
+background:#B5DCF9 none repeat scroll 0 50%;
+border-left:1px solid #118EEA;
+border-right:1px solid #118EEA;
+border-top:1px solid #118EEA;
+color:#2D7BCD;
+display:inline;
+font-size:10pt;
+font-weight:bold;
+padding:4px 12px;
+text-decoration:none;
+}
+.fnf-tab-menu li a:hover, .fnf-tab-menu li a:focus {
+}
+.fnf-tab-menu li.active a {
+}
+.fnf-tab-bar-bottom {
+}
