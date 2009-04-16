@@ -40,12 +40,10 @@ class DummyServer(webapp.RequestHandler):
     count_fact =1
     while(count_fact<21):
       fact = Fact()
-      query = db.Query(User).filter('id =', 'user'+str(count_fact%11))
+      query = db.Query(User).filter('id =', 'user'+str((count_fact%10 )+ 1))
       user = query.get()
       fact.creator = user
       fact.content = "this is fact number -- "+str(count_fact)
-      fact.total_vote_up = count_fact
-      fact.total_vote_down = 20-count_fact
       count_fact+=1
       fact.put()
     self.response.out.write('deleted and recreated all fact data')
@@ -79,32 +77,36 @@ class DummyServer(webapp.RequestHandler):
     self.response.out.write('all facts are now tagged with clubs')
     
   def _gen_fact_vote(self):
-    count_fvf =0
-    count_fvu =0
+    for fv in Fact_Vote.all():
+      fv.delete()
+    count_fvf =1
+    count_fvu =1
     query = db.Query(Fact)
     flist = query.fetch(20, 0)
     query = db.Query(User)
     ulist = query.fetch(20, 0)
     for f in flist:
+      total_up = getattr(f, 'total_vote_up') if getattr(f, 'total_vote_up') else 0
+      total_down = getattr(f, 'total_vote_down') if getattr(f, 'total_vote_down') else 0
       count_fvu = 0
-      total_up = f.total_vote_up
-      total_down = f.total_vote_down
-      while(count_fvu<20):
-        u = ulist[count_fvu]
-        if(count_fvu<=count_fvf):
-          v = 1
+      for u in ulist:
+        fv = Fact_Vote()
+        fv.fact = f
+        fv.voter = u
+        if (count_fvu <= count_fvf):
+          fv.vote = 1
           total_up+=1
         else:
-          v=-1
+          fv.vote = -1
           total_down+=1
-        f.total_vote_up = total_up
-        f.total_vote_down = total_down
-        setattr(f, str(u.key()), v)
+        fv.put()
         count_fvu+=1
-        f.put()
+      f.total_vote_up = total_up
+      f.total_vote_down = total_down
+      f.put()
       count_fvf+=1
     self.response.out.write('all facts have now been voted upon')
-    
+  
   def _update_countryref(self):
     for player in Player.all():
       if (player.country == None):
