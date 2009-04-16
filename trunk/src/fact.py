@@ -4,6 +4,7 @@ from db_fantasy import *
 from BeautifulSoup import BeautifulSoup
 
 from google.appengine.ext import webapp
+from google.appengine.ext.db import Key
 import logging
 import json
 
@@ -15,6 +16,8 @@ class FactServer(webapp.RequestHandler):
       self._fact_get()
     if self.request.path.__eq__('/fact/set'):
       self._fact_set()
+    if self.request.path.__eq__('/fact/vote'):
+      self._fact_vote()
       
   def sanitize_html(self, value):
     soup = BeautifulSoup(value)
@@ -67,15 +70,33 @@ class FactServer(webapp.RequestHandler):
       q.filter('creator IN',friend_key_list).order('-timestamp')
 
     elif fact_query == 'user-liked':
-      q.filter(curr_user_key+ ' =',1).order('-timestamp')
+      # we first retrive fact keys from Fact_Vote tables for those entities which the user voted +1
+      vote_q = db.Query(Fact_Vote).filter('voter =', curr_user_key).filter('vote =', 1).order('-timestamp')
+      vote_r = vote_q.fetch(10,(int(fact_page)-1)*10)
+      # we create a list of the fact keys
+      liked_list = []
+      for vote_entity in vote_r:
+        liked_list.append(vote_entity.fact.key())
+      result = db.get(liked_list)
 
-    elif fact_query == 'user-liked':
-      q.filter(curr_user_key+ ' =',-1).order('-timestamp')      
+    elif fact_query == 'user-disliked':
+      # we first retrive fact keys from Fact_Vote tables for those entities which the user voted -1
+      vote_q = db.Query(Fact_Vote).filter('voter =', curr_user_key).filter('vote =', -1).order('-timestamp')
+      vote_r = vote_q.fetch(10,(int(fact_page)-1)*10)
+      # we create a list of the fact keys
+      disliked_list = []
+      for vote_entity in vote_r:
+        disliked_list.append(vote_entity.fact.key())
+      result = db.get(disliked_list)      
       
     # now we have the query ready so we fetch the results and return them in a "JSONed" list
-    result = q.fetch(10,int(fact_page)-1)
+    # since for user 'liked' and 'disliked phases result if already fetched, we do not do that again
+    if fact_query != 'user-liked' and fact_query != 'user-disliked':
+      result = q.fetch(10,(int(fact_page)-1)*10)
     for curr_fact in result:
-      curr_user_vote = getattr(curr_fact, str(curr_user_key), 0)
+      curr_user_vote = 0
+      if db.Query(Fact_Vote).filter('voter =', curr_user_key).filter('fact =', curr_fact).get():
+        curr_user_vote = db.Query(Fact_Vote).filter('voter =', curr_user_key).get().vote 
       item = {'key' : str(curr_fact.key()),
               'content' : str(curr_fact.content),
               'timestamp' : str(curr_fact.timestamp),
@@ -106,6 +127,39 @@ class FactServer(webapp.RequestHandler):
       setattr(new_fact, fact_player, True)
     new_fact.put()
     if new_fact.is_saved():
-      print 'OK'
+      self.response.out.write('OK')
     else:
-      print 'FAIL'
+      self.response.out.write('FAIL')
+      
+  def _fact_vote(self):
+    # we first catch the post values present in the request
+    fact_key = self.request.get("fact_key")
+    user_id = self.request.get("user_id")
+    vote = self.request.get("vote")
+    if vote == 'up':
+      vote_val = 1
+    elif vote == 'down':
+      vote_val = -1
+    # we get the user key
+    user_q = db.Query(User).filter('id =', user_id)
+    curr_user = user_q.get()
+    curr_user_key = curr_user.key()
+    fact = db.get(Key(fact_key))
+    up_count = getattr(fact, 'total_vote_up') if getattr(fact, 'total_vote_up') else 0 
+    down_count = getattr(fact, 'total_vote_down') if getattr(fact, 'total_vote_down') else 0
+    has_voted = True if db.Query(Fact_Vote).filter('voter =', curr_user_key).get() else False
+    if (has_voted):
+      self.response.out.write('FAIL')
+    else:
+      fact_vote = Fact_Vote()
+      fact_vote.fact = fact
+      fact_vote.voter = curr_user
+      fact_vote.vote = vote_val
+      if vote_val == 1:
+        fact.total_vote_up = up_count+1
+      elif vote_val == -1:
+        fact.total_vote_down = down_count+1
+      fact_vote.put()
+      fact.put()
+      self.response.out.write('OK')
+        

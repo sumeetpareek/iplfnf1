@@ -40,5 +40,5 @@ class FantasyServer(webapp.RequestHandler):
     
     for team in User_Team.all():
       print team.name
-      print team.player_1
-      print team.player_4
+      print team.player_1.name
+      print team.player_4.name
