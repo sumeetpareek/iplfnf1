@@ -12,7 +12,6 @@ import dummy
 import all
 import fact
 import fantasy
- 
 # Map URLs to request handler classes
 application = webapp.WSGIApplication([('/admin', test_data.AdminServer),
                                       ('/data/.*',dummy.DummyServer),
