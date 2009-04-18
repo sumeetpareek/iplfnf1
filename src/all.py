@@ -20,7 +20,9 @@ class AllServer(webapp.RequestHandler):
       self._get_all_player()
     if self.request.path.__eq__('/all/user'):
       self._get_all_user()
-      
+    if self.request.path.__eq__('/all/match'):
+      self._get_all_match()
+        
   def _get_all_country(self):
 #    print 'check'
     country2return = []
@@ -76,3 +78,14 @@ class AllServer(webapp.RequestHandler):
               'userid' : user.id}
       user2return.append(item)
     self.response.out.write(json.write(user2return))
+
+  def _get_all_match(self):
+    match2return = []
+    for match in Match.all():
+      item = {'key' : str(match.key()),
+              'city' : match.city,
+              'start_time' : str(match.starttime),
+              'team_one' : str(match.team_one),
+              'team_two' : str(match.team_two),}
+      match2return.append(item)
+    self.response.out.write(json.write(match2return))
