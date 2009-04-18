@@ -6,7 +6,7 @@ import datetime
 class Match(db.Model):
     stadium = db.StringProperty()
     city = db.StringProperty()
-    start_time = db.TimeProperty()
+    start_time = db.DateTimeProperty()
     team_one = db.ReferenceProperty(Club,collection_name="match_club_one")
     team_two = db.ReferenceProperty(Club,collection_name="match_club_two")
     
@@ -36,7 +36,7 @@ class User_Team(db.Model):
     user = db.ReferenceProperty(User)
     mid = db.ReferenceProperty(Match)
     name = db.StringProperty()
-    created_at = db.TimeProperty()
+    created_at = db.DateTimeProperty(auto_now_add=True)
     cost = db.IntegerProperty()
     total_points = db.IntegerProperty()
     player_1 = db.ReferenceProperty(Player,collection_name="user_team_player_1")
