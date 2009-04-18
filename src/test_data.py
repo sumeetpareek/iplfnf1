@@ -19,18 +19,18 @@ class Admin:
   """init the db"""
 
   def init(self):
-#    for player in Player.all():
-#      print player.name
-#      if player.name == 'sumeet':
-#        player.delete()
-#
-#    for user in User.all():
-#      if user.id == 'sumeet':
-#        user.delete()
-#      print user.id
+    for player in Player.all():
+      print player.name
+      if player.name == 'sumeet':
+        player.delete()
+
+    for user in User.all():
+      if user.id == 'sumeet':
+        user.delete()
+      print user.id
       
-    for fact in Fact_Vote.all():
-      print fact.voter.id
-      print fact.fact.content
-      print fact.vote
-      print '--'
+#    for fact in Fact_Vote.all():
+#      print fact.voter.id
+#      print fact.fact.content
+#      print fact.vote
+#      print '--'

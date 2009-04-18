@@ -1,6 +1,4 @@
 from google.appengine.ext import db
-import db_fact
-import db_fantasy
 import datetime
 
 class Club(db.Model):

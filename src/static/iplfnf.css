@@ -4,6 +4,7 @@ padding:0;
 }
 #fnf-wp {
 border:1px solid #BBBBBB;
+font-family:arial,sans-serif;
 height:1000px;
 margin:20px auto;
 width:835px;
@@ -16,21 +17,21 @@ margin:0;
 padding:0;
 }
 .fnf-tab-menu {
-padding:20px 20px 0;
+padding:30px 15px 0;
+text-align:center;
 }
 .fnf-tab-menu li {
 display:inline;
 list-style-image:none;
 list-style-type:none;
+margin:0 50px;
 }
 .fnf-tab-menu li a {
 background:#B5DCF9 none repeat scroll 0 50%;
-border-left:1px solid #118EEA;
-border-right:1px solid #118EEA;
-border-top:1px solid #118EEA;
+border:1px solid #118EEA;
 color:#2D7BCD;
 display:inline;
-font-size:10pt;
+font-size:32px;
 font-weight:bold;
 padding:4px 12px;
 text-decoration:none;
@@ -38,6 +39,11 @@ text-decoration:none;
 .fnf-tab-menu li a:hover, .fnf-tab-menu li a:focus {
 }
 .fnf-tab-menu li.active a {
+background:#FFFFFF none repeat scroll 0 0;
+border-bottom:1px solid white;
 }
 .fnf-tab-bar-bottom {
+border-top:1px solid #118EEA;
+margin-bottom:10px;
+margin-top:4px;
 }
