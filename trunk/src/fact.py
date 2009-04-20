@@ -96,7 +96,7 @@ class FactServer(webapp.RequestHandler):
     for curr_fact in result:
       curr_user_vote = 0
       if db.Query(Fact_Vote).filter('voter =', curr_user_key).filter('fact =', curr_fact).get():
-        curr_user_vote = db.Query(Fact_Vote).filter('voter =', curr_user_key).get().vote 
+        curr_user_vote = db.Query(Fact_Vote).filter('voter =', curr_user_key).filter('fact =', curr_fact).get().vote 
       item = {'key' : str(curr_fact.key()),
               'content' : str(curr_fact.content),
               'timestamp' : str(curr_fact.timestamp),

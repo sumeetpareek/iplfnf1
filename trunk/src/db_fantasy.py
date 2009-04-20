@@ -3,12 +3,6 @@ from db_fact import *
 from db_general import *
 import datetime
 
-class Match(db.Model):
-    stadium = db.StringProperty()
-    city = db.StringProperty()
-    start_time = db.DateTimeProperty()
-    team_one = db.ReferenceProperty(Club,collection_name="match_club_one")
-    team_two = db.ReferenceProperty(Club,collection_name="match_club_two")
     
 class Match_Performance(db.Model):
     mid = db.ReferenceProperty(Match)
