@@ -1,6 +1,22 @@
+
 ul, li {
 margin:0;
 padding:0;
+}
+.cb {
+clear:both;
+}
+.cr {
+clear:right;
+}
+.loading {
+background:#FF0000 url(images/ajax-loader-red.gif) no-repeat scroll 2px 1px;
+color:white;
+left:0;
+padding-left:22px;
+padding-right:2px;
+position:absolute;
+top:0;
 }
 #fnf-wp {
 border:1px solid #BBBBBB;
@@ -10,6 +26,9 @@ margin:20px auto;
 width:835px;
 }
 #fnf-header {
+}
+#fnf-container {
+position:relative;
 }
 .fnf-tab-bar {
 background:#59B0F0 none repeat scroll 0 0;
@@ -32,7 +51,6 @@ border:1px solid #118EEA;
 color:#2D7BCD;
 display:inline;
 font-size:32px;
-font-weight:bold;
 padding:4px 12px;
 text-decoration:none;
 }
@@ -47,3 +65,124 @@ border-top:1px solid #118EEA;
 margin-bottom:10px;
 margin-top:4px;
 }
+#fact-list-wp {
+margin:5px auto 10px;
+overflow:hidden;
+position:relative;
+width:500px;
+}
+.fact-wp {
+background:#ECEFF5 none repeat scroll 0 0;
+border-bottom:1px solid #E5EAF1;
+font-size:12px;
+margin:0 0 4px;
+padding:6px 4px 6px 6px;
+position:relative;
+}
+div.uimg {
+float:left;
+height:54px;
+margin:0 4px 4px 0;
+overflow:hidden;
+width:54px;
+}
+div.fact-meta {
+}
+div.fact-meta a.uname {
+}
+div.fact-meta span.fact-time {
+color:#999999;
+}
+div.vote-widget {
+font-size:10px;
+margin:3px 0 2px;
+}
+span.vote-btn {
+background:#FFFFFF none repeat scroll 0 0;
+border:1px solid #999999;
+color:#999999;
+cursor:pointer;
+font-size:10px;
+padding:0 3px;
+}
+span.vote-up-on {
+border:1px solid #00BB04;
+color:#00BB04;
+}
+span.vote-down-on {
+border:1px solid #FF0000;
+color:#FF0000;
+}
+span.vote-up-count {
+color:#00BB04;
+margin:0 10px 0 3px;
+}
+span.vote-down-count {
+color:#FF0000;
+margin:0 10px 0 3px;
+}
+#fact-tabs {
+}
+#fact-tabs .fact-tab-bar-top {
+}
+#fact-tabs .fact-tab-menu {
+margin-top:20px;
+text-align:center;
+}
+#fact-tabs .fact-tab-menu li {
+display:inline;
+list-style-image:none;
+list-style-position:outside;
+list-style-type:none;
+margin:0 8px;
+}
+#fact-tabs .fact-tab-menu li a {
+color:#2D7BCD;
+padding-bottom:4px;
+text-decoration:none;
+}
+#fact-tabs .fact-tab-menu a.active {
+border-bottom:4px solid #2D7BCD;
+}
+#fact-tabs .fact-tab-menu li a:hover, #fact-tabs .fact-tab-menu li a:focus {
+border-bottom:4px solid #AFCAE7;
+}
+#fact-tabs .fact-tab-menu a.active:hover, #fact-tabs .fact-tab-menu a.active:focus {
+border-bottom:4px solid #2D7BCD;
+}
+#fact-pager {
+margin:0 auto;
+width:500px;
+}
+#fact-pager div#fact-prev, #fact-pager div#fact-next {
+background:#FAD163 none repeat scroll 0 0;
+border:3px solid #CA9F2A;
+color:#D19A03;
+cursor:pointer;
+font-weight:bold;
+padding:1px 10px;
+text-align:center;
+width:100px;
+}
+#fact-prev {
+float:left;
+}
+#fact-next {
+float:right;
+}
+#fact-add {
+background:#FAFAFA none repeat scroll 0 0;
+border:1px solid #999999;
+margin:20px auto 0;
+width:500px;
+}
+#fact-add #bold-add {
+color:#999999;
+cursor:pointer;
+padding:10px;
+}
+#fact-add-wp{}
+#fact-add-form{}
+#fact-add-content{}
+#fact-add-tags{}
+

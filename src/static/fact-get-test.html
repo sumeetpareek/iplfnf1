@@ -32,13 +32,7 @@ $(document).ready(function(){
   
   //TODO delete
   $("form#fact-get-form").submit(function(){
-  $.ajax({
-    type: "POST",
-    url: "http://localhost:8080/fact/get",
-    dataType: "text",
-    data: ({user_id : $("#userid").val(), fact_query : $("#fact-query").val(), fact_tags:$("#fact-tags").val(),fact_page:$("#fact-page").val()}),
-    success: onFactGet
-  });
+
   return false;
   });
   

@@ -10,14 +10,15 @@ class DummyServer(webapp.RequestHandler):
   def get(self):
     """Handle GET requests."""
     if self.request.path.__eq__('/data/dummy_and_update'):
-      self._gen_user()
-      self._gen_fact()
-      self._gen_fact_player()
-      self._gen_fact_club()
+#      self._gen_user()
+#      self._gen_fact()
+#      self._gen_fact_player()
+#      self._gen_fact_club()
       self._gen_fact_vote()
-      self._update_age()
-      self._update_clubref()
-      self._update_countryref()
+#      self._update_age()
+#      self._update_clubref()
+#      self._update_countryref()
+#      self._update_match_team_ref()
 
   def _gen_user(self):
     for user in User.all():
@@ -40,7 +41,7 @@ class DummyServer(webapp.RequestHandler):
     count_fact =1
     while(count_fact<21):
       fact = Fact()
-      query = db.Query(User).filter('id =', 'user'+str((count_fact%10 )+ 1))
+      query = db.Query(User).filter('id =', 'user'+str(count_fact))
       user = query.get()
       fact.creator = user
       fact.content = "this is fact number -- "+str(count_fact)
@@ -79,13 +80,17 @@ class DummyServer(webapp.RequestHandler):
   def _gen_fact_vote(self):
     for fv in Fact_Vote.all():
       fv.delete()
-    count_fvf =1
-    count_fvu =1
+    for fact in Fact.all():
+      fact.total_vote_up = 0
+      fact.total_vote_down = 0
+      fact.put()
+    count_fvf =0
+    count_fvu =0
     query = db.Query(Fact)
     flist = query.fetch(20, 0)
-    query = db.Query(User)
-    ulist = query.fetch(20, 0)
     for f in flist:
+      query = db.Query(User)
+      ulist = query.fetch(20, 0)
       total_up = getattr(f, 'total_vote_up') if getattr(f, 'total_vote_up') else 0
       total_down = getattr(f, 'total_vote_down') if getattr(f, 'total_vote_down') else 0
       count_fvu = 0
@@ -135,3 +140,12 @@ class DummyServer(webapp.RequestHandler):
         player.age = pda.year - pda1 
         player.put()
     self.response.out.write('player age set')
+    
+  def _update_match_team_ref(self):
+    for match in Match.all():
+      team_one_ref = db.Query(Club).filter('name =', match.team_one_name).get()
+      match.team_one = team_one_ref
+      team_two_ref = db.Query(Club).filter('name =', match.team_two_name).get()
+      match.team_two = team_two_ref
+      match.put()
+    self.response.out.write('team references in match model set')      

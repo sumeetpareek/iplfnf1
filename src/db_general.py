@@ -41,6 +41,15 @@ class User(db.Model):
     total_facts_points = db.IntegerProperty()
     total_fantasy_points = db.IntegerProperty()
     
+class Match(db.Model):
+    stadium = db.StringProperty()
+    city = db.StringProperty()
+    start_time = db.DateTimeProperty()
+    team_one = db.ReferenceProperty(Club,collection_name="match_club_one")
+    team_two = db.ReferenceProperty(Club,collection_name="match_club_two")
+    team_one_name = db.StringProperty()
+    team_two_name = db.StringProperty()
+    
 ## Uncomment loader classes to load data to local/remote datastore and then update all missing data
 
 
@@ -81,4 +90,13 @@ class User(db.Model):
 #                     ('highest_score', int),
 #                     ('avg_score', float),
 #                     ('avg_opp_score', float),
+#                     ])
+#    
+#class MatchLoader(Loader):
+#    def __init__(self):
+#      Loader.__init__(self, 'Match',
+#                    [('start_time', lambda x: datetime.datetime.strptime(x, '%d-%B-%Y:%I %p')),
+#                     ('city', str),
+#                     ('team_one_name', str),
+#                     ('team_two_name', str),
 #                     ])

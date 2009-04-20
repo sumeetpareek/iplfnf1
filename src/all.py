@@ -84,8 +84,8 @@ class AllServer(webapp.RequestHandler):
     for match in Match.all():
       item = {'key' : str(match.key()),
               'city' : match.city,
-              'start_time' : str(match.starttime),
-              'team_one' : str(match.team_one),
-              'team_two' : str(match.team_two),}
+              'start_time' : str(match.start_time),
+              'team_one' : str(match.team_one.key()),
+              'team_two' : str(match.team_two.key()),}
       match2return.append(item)
     self.response.out.write(json.write(match2return))
