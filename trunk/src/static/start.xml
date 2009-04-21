@@ -1,40 +1,114 @@
-<?xml version="1.0" encoding="UTF-8"?>;
-<Module>;
-  <ModulePrefs title="Gifts" >;
-    <Require feature="opensocial-0.8"/>
-  </ModulePrefs>;
-  <Content type="html">;
+<?xml version="1.0" encoding="utf-8" ?><Module>
+	<ModulePrefs title="IPL yet another"
+               title_url="http://iplfnf1.appspot.com"
+               description="This is test description"
+               author="Kaka"
+               author_email="positivecharge@gmail.com"
+               scaling="true"
+               scrolling="false"
+               singleton="false" > 
+		<Require feature="opensocial-0.8"/>
+		<Require feature="views" />
+		<Require feature="dynamic-height"/>
+		<Require feature="analytics"/>
+		
+		<Optional feature="maximize" />
+    	<Optional feature="flash" />
+    	<Optional feature="setprefs" />
+    	
+		<Optional feature="content-rewrite">
+			<Param name="include-urls">.*</Param>
+  			<Param name="exclude-urls"></Param>
+  			<Param name="include-tags">img,script,embed,link,style</Param>
+		</Optional>
+			</ModulePrefs>
+	
+	<Content type="html" view="profile, canvas">
+
     <![CDATA[
-    <script>;
+    
+    <link rel="stylesheet" type="text/css" media="all" href="http://iplfnf1.appspot.com/static/iplfnf.css" />
+    <script src="http://iplfnf1.appspot.com/static/jquery.js"></script>
+
+<script>
 gadgets.util.registerOnLoadHandler(init);
  
 function init() {
-  loadFriends();
+  $('#fnf-header').click(function(){alert('jQ works here :)')});
 }
- 
-function loadFriends() {
-  var req = opensocial.newDataRequest();
- 
-  var viewerFriendsIdSpec = opensocial.newIdSpec({ "userId" : "VIEWER", "groupId" : "FRIENDS" });
-  var opt_params = {};
-  opt_params[opensocial.DataRequest.PeopleRequestFields.MAX] = 100;
-  req.add(req.newFetchPeopleRequest(viewerFriendsIdSpec, opt_params), 'viewerFriends');
-  req.send(onLoadFriends);
-}
- 
-function onLoadFriends(data) {
-  var viewerFriends = data.get('viewerFriends').getData();
- 
-  html = new Array();
-  html.push('<select id="person">;');
-  viewerFriends.each(function(person) {
-    html.push('<option value="' + person.getId() + '">;' + person.getDisplayName() + "</option>;");
-  });
-  html.push('</select>;');
-  document.getElementById('friends').innerHTML = html.join(''); 
-}
-      </script>;
-      <span id="friends"></span>;'''
-    ]]>;
-  </Content>;
-</Module>;
+</script>
+
+		<div id="fnf-wp">
+			
+			<div id="fnf-header">
+				<div class="fnf-tab-bar">
+					<ul class="fnf-tab-menu">
+						<li class="active">
+							<a href="/info/opensocial/type/orkut">Facts</a>
+						</li>
+						<li class="">
+							<a href="/info/opensocial/type/gmail">Fantasy</a>
+						</li>
+					</ul>
+					<div class="fnf-tab-bar-bottom"></div>
+				</div><!-- .fnf-tab-bar -->
+			</div><!-- #fnf-header -->
+			
+			<div id="fnf-container">
+
+				<div id="fact-container" style="display:none;">
+					<div id="fact-tabs">
+						<div class="fact-tab-bar-top"></div>
+							<ul class="fact-tab-menu">
+								<li class="">
+									<a href="#" id="most-liked">Most Liked</a>
+								</li>
+								<li class="">
+									<a href="#" id="most-disliked">Most Disliked</a>
+								</li>
+								<li class="">
+									<a href="#" id="latest" class="active">Latest</a>
+								</li>
+								<li class="">
+									<a href="#" id="user-added">Added by You</a>
+								</li>
+								<li class="">
+									<a href="#" id="friend-added">Added by Friends</a>
+								</li>
+								<li class="">
+									<a href="#" id="user-liked">Liked by You</a>
+								</li>
+								<li class="">
+									<a href="#" id="user-disliked">Disliked by You</a>
+								</li>
+							</ul>
+					</div><!-- #fact-tab-bar -->
+	
+					<div id="fact-add" class="collapsed">
+						<div id="bold-add"><strong>Be Bold!</strong> Click here to share IPL facts with friends.</div>
+					<div id='fact-add-wp' style="display:none;">
+						<div class="uimg"></div>
+						<form id='fact-add-form' action='#' method='post'>
+						<textarea rows="5" cols="25" id="fact-add-content" name="fact-content"/></textarea>
+						<div id='fact-add-tags'>
+						<div id="all_player_coll">Players:<input id="wickPlayer" class="wickEnabled wickPlayer" type="text" size="30" /></div>
+						<div id="all_club_coll">Clubs:<input id="wickClub" class="wickEnabled wickClub" type="text" size="30" /></div>
+						<input id="fact-submit" type="submit" value="Submit Your Fact!">
+						</div>
+						</form>
+					</div>
+					</div><!-- #fact-add -->
+					
+					<div id="fact-list-wp">
+					</div><!-- #fact-list-wp -->
+					
+					<div id="fact-pager"><div id="fact-prev"> &lt; Previous </div><div id="fact-next"> Next &gt; </div><div class="cb"></div></div>
+				</div><!-- #fact-container -->
+			
+			</div><!-- #fnf-container -->
+		</div><!-- #fnf-wp -->
+
+
+    ]]>
+  </Content>
+</Module>
