@@ -10,15 +10,15 @@ class DummyServer(webapp.RequestHandler):
   def get(self):
     """Handle GET requests."""
     if self.request.path.__eq__('/data/dummy_and_update'):
-#      self._gen_user()
-#      self._gen_fact()
-#      self._gen_fact_player()
-#      self._gen_fact_club()
+      self._gen_user()
+      self._gen_fact()
+      self._gen_fact_player()
+      self._gen_fact_club()
       self._gen_fact_vote()
-#      self._update_age()
-#      self._update_clubref()
-#      self._update_countryref()
-#      self._update_match_team_ref()
+      self._update_age()
+      self._update_clubref()
+      self._update_countryref()
+      self._update_match_team_ref()
 
   def _gen_user(self):
     for user in User.all():
