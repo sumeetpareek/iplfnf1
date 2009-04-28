@@ -76,7 +76,7 @@ background:#ECEFF5 none repeat scroll 0 0;
 border-bottom:1px solid #E5EAF1;
 font-size:12px;
 margin:0 0 4px;
-padding:6px 4px 6px 6px;
+padding:6px;
 position:relative;
 }
 div.uimg {
@@ -181,8 +181,107 @@ color:#999999;
 cursor:pointer;
 padding:10px;
 }
-#fact-add-wp{}
-#fact-add-form{}
-#fact-add-content{}
-#fact-add-tags{}
-
+#fact-add-wp {
+}
+#fact-add-form {
+margin:0;
+padding:6px;
+}
+#fact-add-content {
+margin-bottom:4px;
+width:430px;
+}
+#fact-add-tags {
+margin:0 0 0 52px;
+}
+#all_player_coll, #all_club_coll {
+display:inline;
+}
+#fact-add-tags input {
+width:150px;
+}
+#fact-submit {
+margin-top:12px;
+padding:0;
+width:428px !important;
+}
+div.fact-submit-msg-wp {
+font-size:14px;
+margin-top:6px;
+padding:0;
+width:428px;
+}
+div.msg-y {
+background:#FFEE96 url(images/ajax-loader-yellow.gif) no-repeat scroll 3px 50%;
+padding-left:22px;
+}
+div.msg-r {
+background:#FF0000 none repeat scroll 0 0;
+color:#FFFFFF;
+padding:2px 7px;
+}
+<html>
+<head>
+</head>
+<div id="_firebugConsole" style="display: none;" FirebugVersion="1.3.3"/>
+<body>
+<table id="smartInputFloater" class="floater" cellspacing="0" cellpadding="0">
+</table>
+<script src="script.js" language="JavaScript" type="text/javascript">
+</script>
+<div id="fnf-wp">
+<div id="fnf-header">
+</div>
+<div id="fnf-container">
+<div id="fact-container" style="">
+<div id="fact-tabs">
+<div class="fact-tab-bar-top"/>
+<ul class="fact-tab-menu">
+<li class="">
+</li>
+<li class="">
+</li>
+<li class="">
+</li>
+<li class="">
+</li>
+<li class="">
+</li>
+<li class="">
+</li>
+<li class="">
+</li>
+</ul>
+</div>
+<div id="fact-add" class="collapsed">
+<div id="bold-add" style="display: none;">
+</div>
+<div id="fact-add-wp" style="">
+<div class="uimg"/>
+<form id="fact-add-form" method="post" action="#">
+<textarea id="fact-add-content" name="fact-content" cols="25" rows="5"/>
+<div id="fact-add-tags">
+<div id="all_player_coll">
+</div>
+<div id="all_club_coll">
+</div>
+<div class="cb"/>
+<input id="fact-submit" type="submit" value="Submit Your Fact!"/>
+<div class="cb"/>
+<div class="fact-submit-msg-wp">
+<div class="msg-y"/>
+<div class="msg-r">[-!-] Submitting!! Have some fresh juice.</div>
+</div>
+</div>
+</form>
+</div>
+</div>
+<div id="fact-list-wp">
+</div>
+<div id="fact-pager">
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
