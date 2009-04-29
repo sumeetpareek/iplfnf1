@@ -143,6 +143,7 @@ function registerFunctions(){
 	$('#bold-add').click(function(){
 		$(this).hide();
 		$('#fact-add-wp').show();
+		$('#fact-add-wp textarea').focus();
 	});
 	
 	$('#fact-next').click(function(){
@@ -186,4 +187,22 @@ function registerFunctions(){
 		  });
 		}
 	});
+	
+	// to restore the fact add area when it loses focus
+	$('#fact-add-wp textarea').blur(function(){
+		restore_fact_add($(this));
+	});
+}
+
+function restore_fact_add(ele){
+	if (ele.val() == '') {
+		// reset the form, hide add part, show bold part
+		$('#wickPlayer').val('');
+		$('#wickClub').val('');
+		$('#fact-add-wp').hide();
+		$('#bold-add').show();
+	}
+	else {
+		// do nothing
+	}
 }
