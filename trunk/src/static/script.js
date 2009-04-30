@@ -146,6 +146,43 @@ function registerFunctions(){
 		$('#fact-add-wp textarea').focus();
 	});
 	
+	$('#fact-cancel').click(function(e){
+		// get the textarea and pass to the restore function
+		$('#fact-add-content').val('');
+		restore_fact_add($('#fact-add-content'));
+		e.preventDefault();
+	});
+	
+	$('form#fact-add-form').submit(function(){
+		// get the validation return value
+		var fact_valid = fact_submit_validation(); //TODO make function
+		// check validity, perform action and prevent default
+		// if valid send ajax request
+		if (fact_valid == 'ok'){
+			// for the time being only show an alert
+			alert ('correct');
+		}
+		// if content is missing
+		else if (fact_valid == 'content-missing') {
+			$('#fact-add-form .fact-submit-msg-wp').show();
+			$('#fact-add-form .msg-y').hide();
+			$('#fact-add-form .msg-r').html('You are trying to submit the fact without writing any content. <br/>Sorry, that is like trying to score without a bat !?!!').show();
+		}
+		// if tag missing
+		else if (fact_valid == 'tag-missing') {
+			$('#fact-add-form .fact-submit-msg-wp').show();
+			$('#fact-add-form .msg-y').hide();
+			$('#fact-add-form .msg-r').html('You have not associated the fact with atleast one Player or Club. <br/>That is like bowling without declaring any style to the umpire !?!?!').show();
+		}
+		// if tag invalid
+		else if (fact_valid == 'tag-invalid') {
+			$('#fact-add-form .fact-submit-msg-wp').show();
+			$('#fact-add-form .msg-y').hide();
+			$('#fact-add-form .msg-r').html('You have associated incorrect tags with the fact. <br/>Its not possible to play cricket with a rugby ball !?!!').show();
+		}
+		return false;
+	});
+	
 	$('#fact-next').click(function(){
 		curr_fact_page += 1;
 		query_id = $('#fact-tabs .active').attr('id');
@@ -201,8 +238,39 @@ function restore_fact_add(ele){
 		$('#wickClub').val('');
 		$('#fact-add-wp').hide();
 		$('#bold-add').show();
+		$('#fact-add-form .msg-y').html('').hide();
+		$('#fact-add-form .msg-r').html('').hide();
 	}
 	else {
 		// do nothing
 	}
+}
+
+function fact_submit_validation(){
+	if ($('#fact-add-content').val == '') {
+		return 'content-missing';
+	}
+	else if ($('#wickPlayer').val() == '' && $('#wickPlayer').val() == '') {
+		return 'tag-missing';
+	}
+	else if (!tags_valid()){
+		return 'tag-invalid';
+	}
+	else {
+		return 'ok';
+	}
+}
+
+function tags_valid(){
+	// get user entered tags
+	var clubs = $.makeArray($("#wickClub").val());
+	var players = $.makeArray($("#wickPlayer").val());
+	// if any tag is not in the collection return false
+	$.each(clubs,function(i,val){
+		if (all_club_coll.indexOf(val) < 0) {return false;}
+	});
+	$.each(players,function(i,val){
+		if (all_player_coll.indexOf(val) < 0) {return false;}
+	});
+	return true;
 }
