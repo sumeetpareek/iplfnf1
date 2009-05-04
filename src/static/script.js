@@ -169,26 +169,30 @@ function registerFunctions() {
 		// check validity, perform action and prevent default
 		// if valid send ajax request
 		if (fact_valid == 'ok'){
-    var clubs_str = $("#wickClub").val();
-    var clubs_arr = new Array();
-    $.each(all_club_full,function(i,val){
-      if (clubs_str.indexOf(val.name) >=0){
-        clubs_arr.push(val.key);
-      }
-    });
-    var players_str = $("#wickPlayer").val();
-    var players_arr = new Array();
-    $.each(all_player_full,function(i,val){
-      if (players_str.indexOf(val.name) >=0){
-        players_arr.push(val.key);
-      }
-    });
+			// first we show the sending message
+			$('div.fact-submit-msg-wp').show();
+			$('div.fact-submit-msg-wp .msg-y').html('Submitting your fact to the cricket gods now...').show();
+			$('div.fact-submit-msg-wp .msg-r').hide();
+			var clubs_str = $("#wickClub").val();
+			var clubs_arr = new Array();
+			$.each(all_club_full,function(i,val){
+			  if (clubs_str.indexOf(val.name) >=0){
+				clubs_arr.push(val.key);
+			  }
+			});
+			var players_str = $("#wickPlayer").val();
+			var players_arr = new Array();
+			$.each(all_player_full,function(i,val){
+			  if (players_str.indexOf(val.name) >=0){
+				players_arr.push(val.key);
+			  }
+			});
             // we send a post request to set the fact
             $.ajax({
               type: "POST",
               url: "http://localhost:8080/fact/set", //TODO remove local
               dataType: "text",
-              data: ({fact_creator : curr_user, fact_content : $('#fact-add-content').val()}), //TODO remove hardcoded
+              data: ({fact_creator : curr_user, fact_content : $('#fact-add-content').val(), fact_clubs : clubs_arr.join(","), fact_players : players_arr.join(",")}), //TODO remove hardcoded
               success: onFactSet
             });
 		}
@@ -307,7 +311,11 @@ function tags_valid(){
 
 function onFactSet(data,textStatus){
   if (data == 'OK'){
-    alert('done man');
+	// we show the message that fact is submitted
+	$('div.fact-submit-msg-wp .msg-y').html('Cricket gods accepted your fact :)');
+	// restore the entire fact-add region
+	$('#fact-add-content').val('');
+	setTimeout("restore_fact_add()",300);
   }
   else {alert ('asshole');}
 }
