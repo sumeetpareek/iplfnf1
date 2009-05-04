@@ -1,5 +1,7 @@
 $(document).ready(function(){
 	window.curr_user = 'user15'; //TODO remove this
+  // to know if fact-submit-button has focus
+   window.fact_add_focus = false;
 	window.curr_fact_page = 1;
 	showLoading($("#fnf-container"),"Aabra Ka Daabra..!! ");
 	registerFunctions();
@@ -118,7 +120,15 @@ function onFactGet(data,textStatus){
 		first_fact_load = false;
 }
 
-function registerFunctions(){
+function registerFunctions() {
+   
+   $('#fact-submit').focus(function(){
+      fact_add_focus = true;
+   });
+   $('#fact-submit').blur(function(){
+      fact_add_focus = false;
+   });
+   
 	// getting previous and next pages of a fact
 	$('#fact-prev').click(function(){
 		if (curr_fact_page == 1) {
@@ -159,8 +169,28 @@ function registerFunctions(){
 		// check validity, perform action and prevent default
 		// if valid send ajax request
 		if (fact_valid == 'ok'){
-			// for the time being only show an alert
-			alert ('correct');
+    var clubs_str = $("#wickClub").val();
+    var clubs_arr = new Array();
+    $.each(all_club_full,function(i,val){
+      if (clubs_str.indexOf(val.name) >=0){
+        clubs_arr.push(val.key);
+      }
+    });
+    var players_str = $("#wickPlayer").val();
+    var players_arr = new Array();
+    $.each(all_player_full,function(i,val){
+      if (players_str.indexOf(val.name) >=0){
+        players_arr.push(val.key);
+      }
+    });
+            // we send a post request to set the fact
+            $.ajax({
+              type: "POST",
+              url: "http://localhost:8080/fact/set", //TODO remove local
+              dataType: "text",
+              data: ({fact_creator : curr_user, fact_content : $('#fact-add-content').val()}), //TODO remove hardcoded
+              success: onFactSet
+            });
 		}
 		// if content is missing
 		else if (fact_valid == 'content-missing') {
@@ -227,12 +257,12 @@ function registerFunctions(){
 	
 	// to restore the fact add area when it loses focus
 	$('#fact-add-wp textarea').blur(function(){
-		restore_fact_add($(this));
+      setTimeout("if (fact_add_focus == false){restore_fact_add()};",300);
 	});
 }
 
-function restore_fact_add(ele){
-	if (ele.val() == '') {
+function restore_fact_add(){
+	if ($('#fact-add-content').val() == '') {
 		// reset the form, hide add part, show bold part
 		$('#wickPlayer').val('');
 		$('#wickClub').val('');
@@ -247,7 +277,7 @@ function restore_fact_add(ele){
 }
 
 function fact_submit_validation(){
-	if ($('#fact-add-content').val == '') {
+	if ($('#fact-add-content').val() == '') {
 		return 'content-missing';
 	}
 	else if ($('#wickPlayer').val() == '' && $('#wickPlayer').val() == '') {
@@ -273,4 +303,11 @@ function tags_valid(){
 		if (all_player_coll.indexOf(val) < 0) {return false;}
 	});
 	return true;
+}
+
+function onFactSet(data,textStatus){
+  if (data == 'OK'){
+    alert('done man');
+  }
+  else {alert ('asshole');}
 }
