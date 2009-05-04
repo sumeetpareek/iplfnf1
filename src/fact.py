@@ -110,11 +110,11 @@ class FactServer(webapp.RequestHandler):
     
   def _fact_set(self):
     # we get the creator id
-    fact_creator = self.request.get("fact-creator")
-    fact_content = self.sanitize_html(self.request.get("fact-content"))
+    fact_creator = self.request.get("fact_creator")
+    fact_content = self.sanitize_html(self.request.get("fact_content"))
     # as there could be multiple comma separated values for fact_clubs and fact_players we create a list for them
-    fact_clubs = self.request.get("fact-clubs", allow_multiple=True)
-    fact_players = self.request.get("fact-players", allow_multiple=True)
+    fact_clubs = self.request.get("fact_clubs", allow_multiple=True)
+    fact_players = self.request.get("fact_players", allow_multiple=True)
     fact_creator_entity = db.Query(User).filter('id =', fact_creator).get()
     
     # we create a new fact instance, add the attributes and put() it

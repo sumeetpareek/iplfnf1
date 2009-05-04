@@ -10,7 +10,7 @@ class AdminServer(webapp.RequestHandler):
  
   def get(self):
     """Handle GET requests."""
-    self.response.out.write('Welcome to the admin webapp')
+    self.response.out.write('This is test page')
     admin = Admin()
     admin.init()
     self.response.out.write('db refreshed')
@@ -22,13 +22,14 @@ class Admin:
     for fact in Fact.all():
         print fact.content
         print fact.creator.id
+        print fact.dynamic_properties()
         print '---'
-#    for club in Club.all():
-#        print club.name
-#    for player in Player.all():
-#      print player.name
-#      if player.name == 'sumeet':
-#        player.delete()
+    for club in Club.all():
+        print club.name
+    for player in Player.all():
+      print player.name
+      if player.name == 'sumeet':
+        player.delete()
 #
 #    for user in User.all():
 #      if user.id == 'sumeet':
