@@ -14,4 +14,4 @@ class Fact_Vote(db.Model):
     fact = db.ReferenceProperty(Fact)
     voter = db.ReferenceProperty(User)
     vote = db.IntegerProperty()
-    timestamp = db.TimeProperty(auto_now_add=True)
+    timestamp = db.DateTimeProperty(auto_now_add=True)

@@ -99,16 +99,17 @@ class FactServer(webapp.RequestHandler):
         curr_user_vote = db.Query(Fact_Vote).filter('voter =', curr_user_key).filter('fact =', curr_fact).get().vote 
       item = {'key' : str(curr_fact.key()),
               'content' : str(curr_fact.content),
-              'timestamp' : str(curr_fact.timestamp),
+              'timestamp' : curr_fact.timestamp.strftime('%I:%M%p ').lower() + curr_fact.timestamp.strftime('%b %d'),
               'creator' : str(curr_fact.creator.id),
               'tags' : curr_fact.dynamic_properties(),
               'curr_user_vote' : curr_user_vote,
-              'voteups' : curr_fact.total_vote_up,
-              'votedowns' : curr_fact.total_vote_down}
+              'voteups' : curr_fact.total_vote_up == None and '0' or curr_fact.total_vote_up,
+              'votedowns' : curr_fact.total_vote_down == None and '0' or curr_fact.total_vote_down}
       fact2return.append(item)
     self.response.out.write(json.write(fact2return))
     
   def _fact_set(self):
+    fact2return = []
     # we get the creator id
     fact_creator = self.request.get("fact_creator")
     fact_content = self.sanitize_html(self.request.get("fact_content"))
@@ -127,9 +128,21 @@ class FactServer(webapp.RequestHandler):
       setattr(new_fact, fact_player, True)
     new_fact.put()
     if new_fact.is_saved():
-      self.response.out.write('OK')
+      item = {'status' : 'OK',
+        'key' : str(new_fact.key()),
+        'content' : str(new_fact.content),
+        'timestamp' : new_fact.timestamp.strftime('%I:%M%p ').lower() + new_fact.timestamp.strftime('%b %d'),
+        'creator' : str(new_fact.creator.id),
+        'tags' : new_fact.dynamic_properties(),
+        'new_user_vote' : 0,
+        'voteups' : 0,
+        'votedowns' : 0}
+      fact2return.append(item)
+      self.response.out.write(json.write(fact2return))
     else:
-      self.response.out.write('FAIL')
+      item = {'status' : 'FAIL'}
+      fact2return.append(item)
+      self.response.out.write(json.write(fact2return))
       
   def _fact_vote(self):
     # we first catch the post values present in the request
