@@ -4,6 +4,7 @@ from db_general import *
 from google.appengine.ext import webapp
 from google.appengine.ext import db
 import json
+import datetime
 
 class AdminServer(webapp.RequestHandler):
   """Handles requests to /admin URLs and delegates to the Admin class."""
@@ -20,10 +21,11 @@ class Admin:
 
   def init(self):
     for fact in Fact.all():
-        print fact.content
-        print fact.creator.id
-        print fact.dynamic_properties()
-        print '---'
+      print fact.content
+      print fact.creator.id
+      print fact.timestamp.strftime('%I:%M%p ').lower() + fact.timestamp.strftime('%b %d')
+      print fact.dynamic_properties()
+      print '---'
     for club in Club.all():
         print club.name
     for player in Player.all():

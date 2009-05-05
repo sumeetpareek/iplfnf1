@@ -191,7 +191,7 @@ function registerFunctions() {
             $.ajax({
               type: "POST",
               url: "http://localhost:8080/fact/set", //TODO remove local
-              dataType: "text",
+              dataType: "json",
               data: ({fact_creator : curr_user, fact_content : $('#fact-add-content').val(), fact_clubs : clubs_arr.join(","), fact_players : players_arr.join(",")}), //TODO remove hardcoded
               success: onFactSet
             });
@@ -310,12 +310,35 @@ function tags_valid(){
 }
 
 function onFactSet(data,textStatus){
-  if (data == 'OK'){
+  if (data[0].status == 'OK'){
 	// we show the message that fact is submitted
 	$('div.fact-submit-msg-wp .msg-y').html('Cricket gods accepted your fact :)');
+  // slide the new fact down
+  var mk = '';
+  mk += '\
+        <div id="'+ data[0].key +'" class="fact-wp" style="display:none;background:#FFEE96 !important">\
+          <div class="uimg"></div>\
+          <div class="fact-meta">\
+            <a class="uname" href="#">'+ data[0].creator +'</a>\
+            <span class="fact-time">at '+ data[0].timestamp +'</span>\
+          </div>\
+          <div class="vote-widget vote-widget-active">\
+            <span class="vote-btn vote-up vote-up-off">I like this!</span><span class="vote-up-count">+'+ data[0].voteups +'</span>\
+            <span class="vote-btn vote-down vote-down-off">I hate this!</span><span class="vote-down-count">-'+ data[0].votedowns +'</span>\
+          </div>\
+          <div class="fact-content">'+ data[0].content +'</div>\
+          <div class="cb"></div>\
+        </div>\
+  ';
+  $('#fact-list-wp').prepend(mk);
+  $('.fact-wp:hidden').slideDown(1000);
 	// restore the entire fact-add region
 	$('#fact-add-content').val('');
-	setTimeout("restore_fact_add()",300);
+	setTimeout("restore_fact_add()",1100);
   }
-  else {alert ('asshole');}
+  else {alert ('IPL fact you tried to add could not get submitted.');}
+}
+
+function show_fact_on_submit(){
+  
 }
