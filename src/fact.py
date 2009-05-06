@@ -123,9 +123,11 @@ class FactServer(webapp.RequestHandler):
     new_fact.creator = fact_creator_entity
     new_fact.content = fact_content
     for fact_club in fact_clubs:
-      setattr(new_fact, fact_club, True)
+      if fact_club:
+        setattr(new_fact, fact_club, True)
     for fact_player in fact_players:
-      setattr(new_fact, fact_player, True)
+      if fact_player:
+        setattr(new_fact, fact_player, True)
     new_fact.put()
     if new_fact.is_saved():
       item = {'status' : 'OK',

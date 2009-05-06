@@ -121,6 +121,11 @@ function onFactGet(data,textStatus){
 }
 
 function registerFunctions() {
+
+  $('#fact-reset').click(function(){
+		$('#fact-add-form .msg-y').html('').hide();
+		$('#fact-add-form .msg-r').html('').hide();
+  });
    
    $('#fact-submit').focus(function(){
       fact_add_focus = true;
@@ -135,6 +140,7 @@ function registerFunctions() {
 			// do nothing
 		}
 		else {
+      showLoading($('#fact-list-wp'),"Aabra Ka Daabra..!! ");
 			curr_fact_page -= 1;
 			query_id = $('#fact-tabs .active').attr('id');
 			// split animate all the current facts out
@@ -173,6 +179,7 @@ function registerFunctions() {
 			$('div.fact-submit-msg-wp').show();
 			$('div.fact-submit-msg-wp .msg-y').html('Submitting your fact to the cricket gods now...').show();
 			$('div.fact-submit-msg-wp .msg-r').hide();
+      // we get key values from the tags entered
 			var clubs_str = $("#wickClub").val();
 			var clubs_arr = new Array();
 			$.each(all_club_full,function(i,val){
@@ -218,6 +225,7 @@ function registerFunctions() {
 	});
 	
 	$('#fact-next').click(function(){
+    showLoading($('#fact-list-wp'),"Aabra Ka Daabra..!! ");
 		curr_fact_page += 1;
 		query_id = $('#fact-tabs .active').attr('id');
 		// split animate all the current facts out
@@ -284,7 +292,7 @@ function fact_submit_validation(){
 	if ($('#fact-add-content').val() == '') {
 		return 'content-missing';
 	}
-	else if ($('#wickPlayer').val() == '' && $('#wickPlayer').val() == '') {
+	else if ($('#wickPlayer').val() == '' && $('#wickClub').val() == '') {
 		return 'tag-missing';
 	}
 	else if (!tags_valid()){
@@ -296,23 +304,35 @@ function fact_submit_validation(){
 }
 
 function tags_valid(){
-	// get user entered tags
-	var clubs = $.makeArray($("#wickClub").val());
-	var players = $.makeArray($("#wickPlayer").val());
-	// if any tag is not in the collection return false
-	$.each(clubs,function(i,val){
-		if (all_club_coll.indexOf(val) < 0) {return false;}
-	});
-	$.each(players,function(i,val){
-		if (all_player_coll.indexOf(val) < 0) {return false;}
-	});
-	return true;
+  // make complete collection a string and input tags as array
+  var club_str = all_club_coll.join(",");
+  var player_str = all_player_coll.join(",");
+  //var input_club = new Array();
+  //var input_player = new Array();
+  var input_club = $("#wickClub").val().split(",");
+  var input_player = $("#wickPlayer").val().split(",");
+  // iterate over input tags and if they are not in collection return false
+  for (var i=0;i<input_club.length;i++) {
+    if (input_club[i] != '' && club_str.indexOf(input_club[i]) < 0){
+      return false;
+    }
+  }
+  for (var i=0;i<input_player.length;i++) {
+    if (input_player[i] != '' && player_str.indexOf(input_player[i]) < 0){
+      return false;
+    }
+  }
+  // if all is fine return true :)
+  return true;
 }
 
 function onFactSet(data,textStatus){
   if (data[0].status == 'OK'){
 	// we show the message that fact is submitted
 	$('div.fact-submit-msg-wp .msg-y').html('Cricket gods accepted your fact :)');
+	// restore the entire fact-add region
+	$('#fact-add-content').val('');
+	setTimeout("restore_fact_add()",1200);
   // slide the new fact down
   var mk = '';
   mk += '\
@@ -331,10 +351,7 @@ function onFactSet(data,textStatus){
         </div>\
   ';
   $('#fact-list-wp').prepend(mk);
-  $('.fact-wp:hidden').slideDown(1000);
-	// restore the entire fact-add region
-	$('#fact-add-content').val('');
-	setTimeout("restore_fact_add()",1100);
+  setTimeout("$('.fact-wp:hidden').slideDown(1000)",1500);;
   }
   else {alert ('IPL fact you tried to add could not get submitted.');}
 }
