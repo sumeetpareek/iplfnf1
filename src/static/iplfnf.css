@@ -105,11 +105,13 @@ cursor:pointer;
 font-size:10px;
 padding:0 3px;
 }
-span.vote-up-on {
+span.vote-up-on,
+div.vote-widget-active .vote-up-color {
 border:1px solid #00BB04;
 color:#00BB04;
 }
-span.vote-down-on {
+span.vote-down-on ,
+div.vote-widget-active .vote-down-color{
 border:1px solid #FF0000;
 color:#FF0000;
 }
@@ -227,3 +229,4 @@ background:#FF0000 none repeat scroll 0 0;
 color:#FFFFFF;
 padding:2px 7px;
 }
+

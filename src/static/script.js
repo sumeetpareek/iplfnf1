@@ -121,7 +121,13 @@ function onFactGet(data,textStatus){
 }
 
 function registerFunctions() {
-
+  $('.vote-widget .vote-up').mouseover(function(){
+  alert('in');
+    $(this).addClass('vote-up-color');
+  });
+  $('.vote-widget .vote-up').mouseout(function(){
+    $(this).removeClass('vote-up-color');
+  });
   $('#fact-reset').click(function(){
 		$('#fact-add-form .msg-y').html('').hide();
 		$('#fact-add-form .msg-r').html('').hide();
