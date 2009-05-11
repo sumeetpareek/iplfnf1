@@ -151,6 +151,8 @@ class FactServer(webapp.RequestHandler):
     fact_key = self.request.get("fact_key")
     user_id = self.request.get("user_id")
     vote = self.request.get("vote")
+    # we need to return what fact was voted successfully, to update count on client side and all
+    returnval = []
     if vote == 'up':
       vote_val = 1
     elif vote == 'down':
@@ -162,9 +164,12 @@ class FactServer(webapp.RequestHandler):
     fact = db.get(Key(fact_key))
     up_count = getattr(fact, 'total_vote_up') if getattr(fact, 'total_vote_up') else 0 
     down_count = getattr(fact, 'total_vote_down') if getattr(fact, 'total_vote_down') else 0
-    has_voted = True if db.Query(Fact_Vote).filter('voter =', curr_user_key).get() else False
+    has_voted = True if db.Query(Fact_Vote).filter('voter =', curr_user_key).get() else True
     if (has_voted):
-      self.response.out.write('FAIL')
+      item = {'status' : 'FAIL',
+        'key' : fact_key,
+        'vote' : vote}
+      returnval.append(item)
     else:
       fact_vote = Fact_Vote()
       fact_vote.fact = fact
@@ -172,9 +177,16 @@ class FactServer(webapp.RequestHandler):
       fact_vote.vote = vote_val
       if vote_val == 1:
         fact.total_vote_up = up_count+1
+        returncount = up_count+1
       elif vote_val == -1:
         fact.total_vote_down = down_count+1
+        returncount = down_count+1
       fact_vote.put()
       fact.put()
-      self.response.out.write('OK')
+      item = {'status' : 'OK',
+        'key' : fact_key,
+        'vote' : vote,
+        'count' : returncount}
+      returnval.append(item)
+    self.response.out.write(json.write(returnval))
         

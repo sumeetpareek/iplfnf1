@@ -108,6 +108,7 @@ function onFactGet(data,textStatus){
 							<div class="vote-widget '+ vw +'">\
 								<span class="vote-btn vote-up '+ vu +'">I like this!</span><span class="vote-up-count">+'+ val.voteups +'</span>\
 								<span class="vote-btn vote-down '+ vd +'">I hate this!</span><span class="vote-down-count">-'+ val.votedowns +'</span>\
+                <span class="voting" style="display:none;">Registering your vote...</span>\
 							</div>\
 							<div class="fact-content">'+ val.content +'</div>\
 							<div class="cb"></div>\
@@ -121,12 +122,31 @@ function onFactGet(data,textStatus){
 }
 
 function registerFunctions() {
-  $('.vote-widget .vote-up').mouseover(function(){
-  alert('in');
+  $('.vote-widget .vote-up').livequery('mouseover', function(){
     $(this).addClass('vote-up-color');
   });
-  $('.vote-widget .vote-up').mouseout(function(){
+  $('.vote-widget .vote-up').livequery('mouseout', function(){
     $(this).removeClass('vote-up-color');
+  });
+  $('.vote-widget .vote-down').livequery('mouseover', function(){
+    $(this).addClass('vote-down-color');
+  });
+  $('.vote-widget .vote-down').livequery('mouseout', function(){
+    $(this).removeClass('vote-down-color');
+  });
+  $('.vote-widget-active .vote-up').livequery('click', function(){
+    // we get the fact id
+    var vote_fact_id = $(this).parent().parent().attr('id');
+    // show a message to ease the wait
+    var temp = $(this).siblings('.voting').html('Registering your vote... ')show();
+    // send ajax request to cast the vote
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:8080/fact/vote", //TODO remove local
+      dataType: "json",
+      data: ({fact_key: vote_fact_id, user_id : curr_user, vote:'up'}), //TODO remove hardcoded
+      success: onFactVote
+    });
   });
   $('#fact-reset').click(function(){
 		$('#fact-add-form .msg-y').html('').hide();
@@ -351,6 +371,7 @@ function onFactSet(data,textStatus){
           <div class="vote-widget vote-widget-active">\
             <span class="vote-btn vote-up vote-up-off">I like this!</span><span class="vote-up-count">+'+ data[0].voteups +'</span>\
             <span class="vote-btn vote-down vote-down-off">I hate this!</span><span class="vote-down-count">-'+ data[0].votedowns +'</span>\
+            <span class="voting" style="display:none;">Registering your vote...</span>\
           </div>\
           <div class="fact-content">'+ data[0].content +'</div>\
           <div class="cb"></div>\
@@ -362,6 +383,24 @@ function onFactSet(data,textStatus){
   else {alert ('IPL fact you tried to add could not get submitted.');}
 }
 
-function show_fact_on_submit(){
-  
+function onFactVote(data,textStatus){
+  // if ok
+  if (data[0].status == 'OK'){
+    if (data[0].vote == 'up'){
+      // update vote count
+      $('#'+data[0].key+' .vote-up-count').html('+'+data[0].count);
+      // update widget classes
+      $('#'+data[0].key+' .vote-widget').removeClass('vote-widget-active').addClass('vote-widget-inactive');
+      $('#'+data[0].key+' .vote-up').removeClass('vote-up-off').addClass('vote-up-on');
+    }
+    if (data[0].vote == 'down'){
+      $('#'+data[0].key+' .vote-down-count').html('-'+data[0].count);
+      // update widget classes
+      $('#'+data[0].key+' .vote-widget').removeClass('vote-widget-active').addClass('vote-widget-inactive');
+      $('#'+data[0].key+' .vote-down').removeClass('vote-down-off').addClass('vote-down-on');
+    }
+  }
+  // hide the voting message from the fact in question
+  $('#'+data[0].key+' .voting').html('Done :) ');
+  $('#'+data[0].key+' .voting').hide();
 }

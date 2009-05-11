@@ -220,7 +220,7 @@ margin-top:6px;
 padding:0;
 width:428px;
 }
-div.msg-y {
+div.msg-y, span.voting {
 background:#FFEE96 url(images/ajax-loader-yellow.gif) no-repeat scroll 3px 50%;
 padding-left:22px;
 }
