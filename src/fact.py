@@ -164,7 +164,7 @@ class FactServer(webapp.RequestHandler):
     fact = db.get(Key(fact_key))
     up_count = getattr(fact, 'total_vote_up') if getattr(fact, 'total_vote_up') else 0 
     down_count = getattr(fact, 'total_vote_down') if getattr(fact, 'total_vote_down') else 0
-    has_voted = True if db.Query(Fact_Vote).filter('voter =', curr_user_key).get() else True
+    has_voted = True if db.Query(Fact_Vote).filter('voter =', curr_user_key).filter('fact =', fact.key()).get() else False
     if (has_voted):
       item = {'status' : 'FAIL',
         'key' : fact_key,

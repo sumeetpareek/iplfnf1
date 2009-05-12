@@ -65,9 +65,9 @@ margin-bottom:10px;
 margin-top:4px;
 }
 #fact-list-wp {
-padding-bottom:24px;
 margin:5px auto 10px;
 overflow:hidden;
+padding-bottom:24px;
 position:relative;
 width:500px;
 }
@@ -105,13 +105,11 @@ cursor:pointer;
 font-size:10px;
 padding:0 3px;
 }
-span.vote-up-on,
-div.vote-widget-active .vote-up-color {
+span.vote-up-on, div.vote-widget-active .vote-up-color {
 border:1px solid #00BB04;
 color:#00BB04;
 }
-span.vote-down-on ,
-div.vote-widget-active .vote-down-color{
+span.vote-down-on, div.vote-widget-active .vote-down-color {
 border:1px solid #FF0000;
 color:#FF0000;
 }
@@ -207,7 +205,7 @@ margin-top:12px;
 padding:0;
 width:180px !important;
 }
-#fact-reset ,#fact-cancel {
+#fact-reset, #fact-cancel {
 margin-top:12px;
 padding:0;
 width:110px !important;
@@ -229,4 +227,54 @@ background:#FF0000 none repeat scroll 0 0;
 color:#FFFFFF;
 padding:2px 7px;
 }
-
+.fact-content {
+}
+.fact-relatedto {
+font-size:11px;
+margin:0 0 0 56px;
+text-align:right;
+}
+.fact-relatedto a {
+background:transparent url(images/sm-bg.gif) no-repeat scroll -20px -220px;
+color:#2D7BCD;
+line-height:17px;
+margin-left:6px;
+padding-left:22px;
+text-decoration:none;
+}
+.fact-relatedto a:hover {
+text-decoration:underline;
+}
+.fact-relatedto a.RCB {
+background-position:-17px -181px;
+}
+.fact-relatedto a.DD {
+background-position:-19px -100px;
+}
+.fact-relatedto a.DC {
+background-position:-17px -80px;
+}
+.fact-relatedto a.KXIP {
+background-position:-18px -140px;
+}
+.fact-relatedto a.RR {
+background-position:-18px -200px;
+}
+.fact-relatedto a.CSK {
+background-position:-19px -60px;
+}
+.fact-relatedto a.KKR {
+background-position:-18px -120px;
+}
+.fact-relatedto a.mi {
+background-position:-19px -160px;
+}
+.fact-relatedto a.Bat {
+background-position:-20px -21px;
+}
+.fact-relatedto a.Bowl {
+background-position:-20px -40px;
+}
+.fact-relatedto a.AllRounder {
+background-position:-20px 0;
+}

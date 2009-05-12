@@ -20,29 +20,13 @@ class Admin:
   """init the db"""
 
   def init(self):
-    for fact in Fact.all():
-      print fact.content
-      print fact.creator.id
-      print fact.timestamp.strftime('%I:%M%p ').lower() + fact.timestamp.strftime('%b %d')
-      print fact.dynamic_properties()
-      print '---'
     for club in Club.all():
-        print club.name
-    for player in Player.all():
-      print player.name
-      if player.name == 'sumeet':
-        player.delete()
+      print club.short_name
 #
 #    for user in User.all():
 #      if user.id == 'sumeet':
 #        user.delete()
 #      print user.id
-      
-#    for fact in Fact_Vote.all():
-#      print fact.voter.id
-#      print fact.fact.content
-#      print fact.vote
-#      print '--'
 #
 #    for match in Match.all():
 #      if match.team_one is not None and match.team_two is not None:

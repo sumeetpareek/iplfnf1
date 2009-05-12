@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	window.curr_user = 'user15'; //TODO remove this
+	window.curr_user = 'user16'; //TODO remove this
   // to know if fact-submit-button has focus
    window.fact_add_focus = false;
 	window.curr_fact_page = 1;
@@ -86,6 +86,7 @@ function onFactGet(data,textStatus){
 		// iterate over each data > form markup > get user info from container > app info from the collections > append and slide
 		$.each(data, function(i,val){
 			var mk = '';
+      var tags = '';
 			var vw = 'vote-widget-active';
 			var vu = 'vote-up-off';
 			var vd = 'vote-down-off';
@@ -98,6 +99,16 @@ function onFactGet(data,textStatus){
 					vd = 'vote-down-on';
 				}
 			}
+      // foreach tag that is returned we show them in a-tag by fetching the name
+      for (var i=0;i<val.tags.length;i++) {
+        var tag_detail = getTagDetail(val.tags[i]);
+        if (tag_detail[0] == 'club'){
+          tags += '<a href="#" name="'+ all_club_full[tag_detail[1]].key +'" class="'+ all_club_full[tag_detail[1]].short_name +'">'+all_club_full[tag_detail[1]].name+'</a>';
+        }
+        if (tag_detail[0] == 'player'){
+          tags += '<a href="#" name="'+ all_player_full[tag_detail[1]].key +'" class="'+ all_player_full[tag_detail[1]].type +'">'+all_player_full[tag_detail[1]].name+'</a>';
+        }
+      }
 			mk += '\
 						<div id="'+ val.key +'" class="fact-wp" style="display:none;">\
 							<div class="uimg"></div>\
@@ -112,6 +123,7 @@ function onFactGet(data,textStatus){
 							</div>\
 							<div class="fact-content">'+ val.content +'</div>\
 							<div class="cb"></div>\
+              <div class="fact-relatedto">'+ tags +'</div>\
 						</div>\
 			';
 			$('#fact-list-wp').append(mk);
@@ -138,13 +150,27 @@ function registerFunctions() {
     // we get the fact id
     var vote_fact_id = $(this).parent().parent().attr('id');
     // show a message to ease the wait
-    var temp = $(this).siblings('.voting').html('Registering your vote... ')show();
+    var temp = $(this).siblings('.voting').html('Registering your vote... ').show();
     // send ajax request to cast the vote
     $.ajax({
       type: "POST",
       url: "http://localhost:8080/fact/vote", //TODO remove local
       dataType: "json",
       data: ({fact_key: vote_fact_id, user_id : curr_user, vote:'up'}), //TODO remove hardcoded
+      success: onFactVote
+    });
+  });
+  $('.vote-widget-active .vote-down').livequery('click', function(){
+    // we get the fact id
+    var vote_fact_id = $(this).parent().parent().attr('id');
+    // show a message to ease the wait
+    var temp = $(this).siblings('.voting').html('Registering your vote... ').show();
+    // send ajax request to cast the vote
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:8080/fact/vote", //TODO remove local
+      dataType: "json",
+      data: ({fact_key: vote_fact_id, user_id : curr_user, vote:'down'}), //TODO remove hardcoded
       success: onFactVote
     });
   });
@@ -273,6 +299,8 @@ function registerFunctions() {
 			// do nothing
 		}
 		else {
+      // you obviously gotta start from the first page
+      curr_fact_page = 1;
 			// remove the active class from other option
 			$('#fact-tabs .active').removeClass('active');
 			// add active class to the present option
@@ -343,6 +371,7 @@ function tags_valid(){
       return false;
     }
   }
+  alert(input_player.lenght);
   for (var i=0;i<input_player.length;i++) {
     if (input_player[i] != '' && player_str.indexOf(input_player[i]) < 0){
       return false;
@@ -375,6 +404,7 @@ function onFactSet(data,textStatus){
           </div>\
           <div class="fact-content">'+ data[0].content +'</div>\
           <div class="cb"></div>\
+          <div class="fact-relatedto" style="display:none;"></div>\
         </div>\
   ';
   $('#fact-list-wp').prepend(mk);
@@ -386,6 +416,7 @@ function onFactSet(data,textStatus){
 function onFactVote(data,textStatus){
   // if ok
   if (data[0].status == 'OK'){
+    $('#'+data[0].key+' .voting').html('Done :) ').css('background','#FFEE96').css('padding-left','4px');
     if (data[0].vote == 'up'){
       // update vote count
       $('#'+data[0].key+' .vote-up-count').html('+'+data[0].count);
@@ -400,7 +431,31 @@ function onFactVote(data,textStatus){
       $('#'+data[0].key+' .vote-down').removeClass('vote-down-off').addClass('vote-down-on');
     }
   }
+  else {
+    $('#'+data[0].key+' .voting').html('Failed :( ').css('background','#FFEE96').css('padding-left','4px');
+  }
+  
   // hide the voting message from the fact in question
-  $('#'+data[0].key+' .voting').html('Done :) ');
-  $('#'+data[0].key+' .voting').hide();
+  setTimeout("$('#"+data[0].key+" .voting').hide()",2000);
+}
+
+// gives the player or club name when the key is passed
+function getTagDetail(key) {
+  var toReturn = new Array();
+  for (var i=0;i<all_club_full.length;i++) {
+    if (all_club_full[i].key == key){
+      toReturn[0] = 'club';
+      toReturn[1] = i;
+      return toReturn;
+    }
+  }
+  for (var i=0;i<all_player_full.length;i++) {
+    if (all_player_full[i].key == key){
+      toReturn[0] = 'player';
+      toReturn[1] = i;
+      return toReturn;
+    }
+  }
+  toReturn[0] = 'none';
+  return toReturn;
 }
