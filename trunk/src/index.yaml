@@ -10,7 +10,50 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
-# Used 11 times in query history.
+# Used once in query history.
+- kind: Fact
+  properties:
+  - name: =
+  - name: =
+  - name: timestamp
+    direction: desc
+
+# Unused in query history -- copied from input.
+- kind: Fact
+  properties:
+  - name: agdpcGxmbmYxcgsLEgRVc2VyGJ8PDA
+  - name: timestamp
+    direction: desc
+
+# Unused in query history -- copied from input.
+- kind: Fact
+  properties:
+  - name: agdpcGxmbmYxcgsLEgRVc2VyGKYPDA
+  - name: timestamp
+    direction: desc
+
+# Unused in query history -- copied from input.
+- kind: Fact
+  properties:
+  - name: agdpcGxmbmYxcgsLEgRVc2VyGLwEDA
+  - name: timestamp
+    direction: desc
+
+# Unused in query history -- copied from input.
+- kind: Fact
+  properties:
+  - name: agdpcGxmbmYxcgsLEgRVc2VyGMoCDA
+  - name: timestamp
+    direction: desc
+
+# Unused in query history -- copied from input.
+- kind: Fact
+  properties:
+  - name: agdpcGxmbmYxcgsLEgRVc2VyGNcDDA
+  - name: timestamp
+    direction: desc
+
+# Used 32 times in query history.
 - kind: Fact
   properties:
   - name: creator
@@ -24,7 +67,7 @@ indexes:
   - name: timestamp
     direction: desc
 
-# Unused in query history -- copied from input.
+# Used 7 times in query history.
 - kind: Fact_Vote
   properties:
   - name: vote
