@@ -1,5 +1,7 @@
 $(document).ready(function(){
 	window.curr_user = 'user16'; //TODO remove this
+    window.curr_fact_club = '';
+    window.curr_fact_player = '';
   // to know if fact-submit-button has focus
    window.fact_add_focus = false;
 	window.curr_fact_page = 1;
@@ -74,7 +76,7 @@ function onLoadAllMatch(data, textStatus) {
     type: "POST",
     url: "http://localhost:8080/fact/get", //TODO remove local
     dataType: "json",
-    data: ({user_id : curr_user, fact_query : "latest", fact_page:curr_fact_page}), //TODO remove hardcoded
+    data: ({user_id : curr_user, fact_query : "latest", fact_page:curr_fact_page, fact_clubs:curr_fact_club, fact_players:curr_fact_player }), //TODO remove hardcoded
     success: onFactGet
   });
 }
@@ -103,10 +105,10 @@ function onFactGet(data,textStatus){
       for (var i=0;i<val.tags.length;i++) {
         var tag_detail = getTagDetail(val.tags[i]);
         if (tag_detail[0] == 'club'){
-          tags += '<a href="#" name="'+ all_club_full[tag_detail[1]].key +'" class="'+ all_club_full[tag_detail[1]].short_name +'">'+all_club_full[tag_detail[1]].name+'</a>';
+          tags += '<a href="#" title="Club" name="'+ all_club_full[tag_detail[1]].key +'" class="'+ all_club_full[tag_detail[1]].short_name +'">'+all_club_full[tag_detail[1]].name+'</a>';
         }
         if (tag_detail[0] == 'player'){
-          tags += '<a href="#" name="'+ all_player_full[tag_detail[1]].key +'" class="'+ all_player_full[tag_detail[1]].type +'">'+all_player_full[tag_detail[1]].name+'</a>';
+          tags += '<a href="#" title="Player" name="'+ all_player_full[tag_detail[1]].key +'" class="'+ all_player_full[tag_detail[1]].type +'">'+all_player_full[tag_detail[1]].name+'</a>';
         }
       }
 			mk += '\
@@ -134,6 +136,14 @@ function onFactGet(data,textStatus){
 }
 
 function registerFunctions() {
+  // when a fact tag is clicked we need to fetch facts to that tag and the current query type
+  $('.fact-relatedto a').livequery('click',function(){
+    //reset curr club and player
+    curr_fact_player = '';
+    curr_fact_club = '';
+    if ($(this).attr('title')=='Club'){alert('club--'+$(this).attr('name'));}
+    if ($(this).attr('title')=='Player'){alert('player--'+$(this).attr('name'));}
+  });
   $('.vote-widget .vote-up').livequery('mouseover', function(){
     $(this).addClass('vote-up-color');
   });
@@ -202,7 +212,7 @@ function registerFunctions() {
 		    type: "POST",
 		    url: "http://localhost:8080/fact/get", //TODO remove local
 		    dataType: "json",
-		    data: ({user_id : curr_user, fact_query : query_id, fact_page:curr_fact_page}), //TODO remove hardcoded
+		    data: ({user_id : curr_user, fact_query : query_id, fact_page:curr_fact_page, fact_clubs:curr_fact_club, fact_players:curr_fact_player}), //TODO remove hardcoded
 		    success: onFactGet
 		  });
 		}
@@ -287,7 +297,7 @@ function registerFunctions() {
 	    type: "POST",
 	    url: "http://localhost:8080/fact/get", //TODO remove local
 	    dataType: "json",
-	    data: ({user_id : curr_user, fact_query : query_id, fact_page:curr_fact_page}), //TODO remove hardcoded
+	    data: ({user_id : curr_user, fact_query : query_id, fact_page:curr_fact_page, fact_clubs:curr_fact_club, fact_players:curr_fact_player}), //TODO remove hardcoded
 	    success: onFactGet
 	  });
 	});
@@ -315,7 +325,7 @@ function registerFunctions() {
 		    type: "POST",
 		    url: "http://localhost:8080/fact/get", //TODO remove local
 		    dataType: "json",
-		    data: ({user_id : curr_user, fact_query : query_id, fact_page:1}), //TODO remove hardcoded
+		    data: ({user_id : curr_user, fact_query : query_id, fact_page:1, fact_clubs:curr_fact_club, fact_players:curr_fact_player}), //TODO remove hardcoded
 		    success: onFactGet
 		  });
 		}
@@ -363,8 +373,8 @@ function tags_valid(){
   var player_str = all_player_coll.join(",");
   //var input_club = new Array();
   //var input_player = new Array();
-  var input_club = $("#wickClub").val().split(",");
-  var input_player = $("#wickPlayer").val().split(",");
+  var input_club = $("#wickClub").val().split(", ");
+  var input_player = $("#wickPlayer").val().split(", ");
   // iterate over input tags and if they are not in collection return false
   for (var i=0;i<input_club.length;i++) {
     if (input_club[i] != '' && club_str.indexOf(input_club[i]) < 0){
@@ -390,6 +400,17 @@ function onFactSet(data,textStatus){
 	setTimeout("restore_fact_add()",1200);
   // slide the new fact down
   var mk = '';
+  var tags = '';
+  // foreach tag that is returned we show them in a-tag by fetching the name
+  for (var i=0;i<data[0].tags.length;i++) {
+    var tag_detail = getTagDetail(data[0].tags[i]);
+    if (tag_detail[0] == 'club'){
+      tags += '<a href="#" title="Club" name="'+ all_club_full[tag_detail[1]].key +'" class="'+ all_club_full[tag_detail[1]].short_name +'">'+all_club_full[tag_detail[1]].name+'</a>';
+    }
+    if (tag_detail[0] == 'player'){
+      tags += '<a href="#" title="Player" name="'+ all_player_full[tag_detail[1]].key +'" class="'+ all_player_full[tag_detail[1]].type +'">'+all_player_full[tag_detail[1]].name+'</a>';
+    }
+  }
   mk += '\
         <div id="'+ data[0].key +'" class="fact-wp" style="display:none;background:#FFEE96 !important">\
           <div class="uimg"></div>\
@@ -404,7 +425,7 @@ function onFactSet(data,textStatus){
           </div>\
           <div class="fact-content">'+ data[0].content +'</div>\
           <div class="cb"></div>\
-          <div class="fact-relatedto" style="display:none;"></div>\
+              <div class="fact-relatedto">'+ tags +'</div>\
         </div>\
   ';
   $('#fact-list-wp').prepend(mk);

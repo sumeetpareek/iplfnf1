@@ -43,9 +43,11 @@ class FactServer(webapp.RequestHandler):
     # create a query over the fact table and filter by the player and club tags in the request (thanks to expando class)
     q = db.Query(Fact)
     for fact_club in fact_clubs:
-      q.filter(fact_club+ ' =', True)
+      if fact_club != '':
+        q.filter(fact_club+ ' =', True)
     for fact_player in fact_players:
-      q.filter(fact_player+ ' =', True)
+      if fact_player != '':
+        q.filter(fact_player+ ' =', True)
     
     # filter the query further depending upon what is the criteria chosen by the app user, which is present in the request as 'fact_query' 
     if fact_query == 'latest':
