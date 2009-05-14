@@ -141,9 +141,20 @@ function registerFunctions() {
     //reset curr club and player
     curr_fact_player = '';
     curr_fact_club = '';
-    if ($(this).attr('title')=='Club'){alert('club--'+$(this).attr('name'));}
-    if ($(this).attr('title')=='Player'){alert('player--'+$(this).attr('name'));}
+    //set club or player tag to the clicked value
+    if ($(this).attr('title')=='Club'){curr_fact_club = $(this).attr('name');}
+    if ($(this).attr('title')=='Player'){curr_fact_player = $(this).attr('name');}
+    //get what the current query_id is and send ajax request to get facts
+    var query_id = $('#fact-tabs .active').attr('id');
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:8080/fact/get", //TODO remove local
+      dataType: "json",
+      data: ({user_id : curr_user, fact_query : query_id, fact_page:curr_fact_page, fact_clubs:curr_fact_club, fact_players:curr_fact_player}), //TODO remove hardcoded
+      success: onFactGet
+    });
   });
+  
   $('.vote-widget .vote-up').livequery('mouseover', function(){
     $(this).addClass('vote-up-color');
   });
@@ -381,7 +392,6 @@ function tags_valid(){
       return false;
     }
   }
-  alert(input_player.lenght);
   for (var i=0;i<input_player.length;i++) {
     if (input_player[i] != '' && player_str.indexOf(input_player[i]) < 0){
       return false;
