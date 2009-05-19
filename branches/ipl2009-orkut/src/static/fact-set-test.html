@@ -1,0 +1,109 @@
+<html>
+<head>
+<title>Fact Set Test</title>
+<link rel="stylesheet" type="text/css" href="wick.css" />
+<script type="text/javascript" language="JavaScript" src="jquery.js"></script>
+<script>
+$(document).ready(function(){
+  $.ajax({
+    type: "GET",
+    url: "http://localhost:8080/all/country",
+    dataType: "json",
+    success: onLoadAllCountry
+  });
+  $.ajax({
+    type: "GET",
+    url: "http://localhost:8080/all/club",
+    dataType: "json",
+    success: onLoadAllClub
+  });
+  $.ajax({
+    type: "GET",
+    url: "http://localhost:8080/all/player",
+    dataType: "json",
+    success: onLoadAllPlayer
+  });
+  $.ajax({
+    type: "GET",
+    url: "http://localhost:8080/all/user",
+    dataType: "json",
+    success: onLoadAllUser
+  });
+  $("form#temp-form").submit(function(){
+    if ($("#temp-fc").val()==''){alert("You must enter fact content!!");return false;}
+    clubs = $("#wickClub").val();
+    $.each(all_club_full,function(i,val){
+      if (clubs.indexOf(val.name) >=0){
+        $("#final-ftc").append("<option selected=\"selected\" value=\""+val.key+"\">"+val.key+"</option>")
+      }
+    });
+    players = $("#wickPlayer").val();
+    $.each(all_player_full,function(i,val){
+      if (players.indexOf(val.name) >=0){
+        $("#final-ftp").append("<option selected=\"selected\" value=\""+val.key+"\">"+val.key+"</option>")
+      }
+    });
+    if ($("#final-ftc").val() == null && $("#final-ftp").val() == null ){alert("You must enter 1 valid CLUB or PLAYER tag");return false;}
+    userid = $("#inuser").val();
+    $("#final-user").append("<option selected=\"selected\" value=\""+userid+"\">"+userid+"</option>")
+    factcontent = $("#temp-fc").val();
+    $("#final-fc").val(factcontent);
+    $("form#hidden-form").submit();
+    return false;
+  });
+});
+
+function onLoadAllCountry(data, textStatus) {
+  window.all_country_full = data;
+  window.all_country_coll = [];
+  $.each(data, function(i,val){all_country_coll[i]=val.country_name;});
+}
+
+function onLoadAllUser(data, textStatus) {
+  window.all_user_full = data;
+  window.all_user_coll = [];
+  $.each(data, function(i,val){
+    all_country_coll[i]=val.userid;
+    $("#inuser").append("<option value=\""+val.userid+"\">"+val.userid+"</option>");
+  });
+}
+
+function onLoadAllClub(data, textStatus) {
+  window.all_club_full = data;
+  window.all_club_coll = [];
+  $.each(data, function(i,val){all_club_coll[i]=val.name;});
+}
+
+function onLoadAllPlayer(data, textStatus) {
+  window.all_player_full = data;
+  window.all_player_coll = [];
+  $.each(data, function(i,val){
+    all_player_coll[i]=val.name;
+  });
+}
+
+
+
+</script>
+</head>
+<body>
+<div id="god">1.Select a user 2.Enter fact content 3.Enter player and team tags 4.Submit<br><span style="color:red;">Please note that the validation functions have been already written in javascript :)</span></div>
+<form id="temp-form" action="http://localhost:8080/fact/set" method="POST">
+<br><br>
+<div>User Id (do not confuse with user key())<select id="inuser" name="temp-user"/></select></div><br><br>
+<div id="all_country_coll">Fact Content:(html should not be allowed)<textarea rows="5" cols="40" id="temp-fc" name="temp-fc"/></textarea></div><br><br>
+<div id="all_club_coll">Club Tag:(autocomplete on club names)<input autocomplete="off" id="wickClub" class="wickEnabled wickClub" type="text" size="30" name="temp-ftc"/></div><br><br>
+<div id="all_player_coll">Player Tag: (autocomplete on player names)<input autocomplete="off" id="wickPlayer" class="wickEnabled wickPlayer" type="text" size="30" name="temp-ftp"/></div><br><br>
+<input id="temp-submit" type="submit" value="Submit Your Fact">
+</form>
+<br><br>
+<form id="hidden-form" action="http://localhost:8080/fact/set" method="POST" style="display:none;">
+<select id="final-user" name="fact-creator"></select>
+<textarea rows="5" cols="40" id="final-fc" name="fact-content"/></textarea>
+<select id="final-ftc" name="fact-clubs" multiple="multiple"></select>
+<select id="final-ftp" name="fact-players" multiple="multiple"></select>
+</form>
+<script type="text/javascript" language="JavaScript" src="wick.js"></script>
+</body>
+</html>
+

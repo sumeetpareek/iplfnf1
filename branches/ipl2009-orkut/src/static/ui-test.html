@@ -1,0 +1,92 @@
+<html>
+	<head>
+		<title>FNF UI TEST</title>
+		<link rel="stylesheet" type="text/css" href="wick.css" />
+		<link rel="stylesheet" type="text/css" href="iplfnf.css" />
+		<script type="text/javascript" language="JavaScript" src="jquery.js"></script>
+    <script type="text/javascript" language="JavaScript" src="jquery.livequery.js"></script>
+		<script type="text/javascript" language="JavaScript" src="wick.js"></script>
+		<script type="text/javascript" language="JavaScript" src="script.js"></script>
+	</head>
+
+	<body>
+		<div id="fnf-wp">
+			
+			<div id="fnf-header">
+				<div class="fnf-tab-bar">
+					<ul class="fnf-tab-menu">
+						<li class="active">
+							<a href="/info/opensocial/type/orkut">Facts</a>
+						</li>
+						<li class="">
+							<a href="/info/opensocial/type/gmail">Fantasy</a>
+						</li>
+					</ul>
+					<div class="fnf-tab-bar-bottom"></div>
+				</div><!-- .fnf-tab-bar -->
+			</div><!-- #fnf-header -->
+			
+			<div id="fnf-container">
+
+				<div id="fact-container" style="display:none;">
+					<div id="fact-tabs">
+						<div class="fact-tab-bar-top"></div>
+							<ul class="fact-tab-menu">
+								<li class="">
+									<a href="#" id="most-liked">Most Liked</a>
+								</li>
+								<li class="">
+									<a href="#" id="most-disliked">Most Disliked</a>
+								</li>
+								<li class="">
+									<a href="#" id="latest" class="active">Latest</a>
+								</li>
+								<li class="">
+									<a href="#" id="user-added">Added by You</a>
+								</li>
+								<li class="">
+									<a href="#" id="friend-added">Added by Friends</a>
+								</li>
+								<li class="">
+									<a href="#" id="user-liked">Liked by You</a>
+								</li>
+								<li class="">
+									<a href="#" id="user-disliked">Disliked by You</a>
+								</li>
+							</ul>
+					</div><!-- #fact-tab-bar -->
+	
+					<div id="fact-add" class="collapsed">
+						<div id="bold-add"><strong>Be Bold!</strong> Click here to share IPL facts with friends.</div>
+					<div id='fact-add-wp' style="display:none;">
+						<div class="uimg"></div>
+						<form id='fact-add-form' action='#' method='post'>
+						<textarea rows="5" cols="25" id="fact-add-content" name="fact-content"/></textarea>
+						<div id='fact-add-tags'>
+						<div id="all_player_coll">Players:<input id="wickPlayer" class="wickEnabled wickPlayer" type="text" size="30" /></div>
+						<div id="all_club_coll">Clubs:<input id="wickClub" class="wickEnabled wickClub" type="text" size="30" /></div>
+						<div class="cb"></div>
+						<input id="fact-submit" type="submit" value="submit your IPL Fact!">
+						<input id="fact-reset" type="reset" value="reset">
+						<input id="fact-cancel" type="reset" value="cancel">
+						<div class="cb"></div>
+						<div class="fact-submit-msg-wp" style="display:none;">
+							<div class="msg-y"></div>
+							<div class="msg-r">Please enter some fact and atleast one associated tag in Player and/or Club field.<br/>(You cannot start bowling without specifing bowling style to the umpire !!?!?)</div>
+						</div>
+						</div>
+						</form>
+					</div>
+					</div><!-- #fact-add -->
+					
+					<div id="fact-list-wp">
+          <div class="cb"></div>
+					</div><!-- #fact-list-wp -->
+					
+					<div id="fact-pager"><div id="fact-prev"> &lt; Previous </div><div id="fact-next"> Next &gt; </div><div class="cb"></div></div>
+				</div><!-- #fact-container -->
+			
+			</div><!-- #fnf-container -->
+		</div><!-- #fnf-wp -->
+	</body>
+</html>
