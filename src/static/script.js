@@ -1,94 +1,66 @@
-$(document).ready(function(){
-	window.curr_user = 'user16'; //TODO remove this
-    window.curr_fact_club = '';
-    window.curr_fact_player = '';
-  // to know if fact-submit-button has focus
-   window.fact_add_focus = false;
-	window.curr_fact_page = 1;
-	showLoading($("#fnf-container"),"Aabra Ka Daabra..!! ");
-	registerFunctions();
-	startGettingData();
-	//$(".fact-wp:odd").animate({left: 500}, 1500);
-	//$(".fact-wp:even").animate({right: 500}, 1500);
-});
+window.curr_user = 'user16'; //TODO remove this
+window.curr_fact_club = '';
+window.curr_fact_player = '';
+// To know if fact-submit-button has focus
+window.fact_add_focus = false;
+window.curr_fact_page = 1;
 
 function showLoading(obj,msg){
-	obj.append("<div class=\"loading\">"+ msg +"</div>");
+  obj.append("<div class=\"loading\">"+ msg +"</div>");
 }
 
 function hideLoading(obj) {
-obj.remove();
+  obj.remove();
 }
 
 function startGettingData(){
-  window.first_fact_load = true;
-  $.ajax({
-    type: "GET",
-    url: "http://localhost:8080/all/country", //TODO remove local
-    dataType: "json",
-    success: onLoadAllCountry
-  });
+  var params = {};
+  params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+  var url = 'http://iplfnf1.appspot.com/all/country';
+  gadgets.io.makeRequest(url, onLoadAllCountry, params);
 }
 
-function onLoadAllCountry(data, textStatus) {
-  window.all_country_full = data;
-  window.all_country_coll = [];
-  $.each(data, function(i,val){all_country_coll[i]=val.country_name;});
+function onLoadAllCountry(r) {
+  all_country_full = r.data;
+  all_country_coll = [];
+  $.each(r.data, function(i,val){all_country_coll[i]=val.country_name;});
   //next we get the clubs
-  $.ajax({
-    type: "GET",
-    url: "http://localhost:8080/all/club", //TODO remove local
-    dataType: "json",
-    success: onLoadAllClub
-  });
+  var params = {};
+  params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+  var url = 'http://iplfnf1.appspot.com/all/club';
+  gadgets.io.makeRequest(url, onLoadAllClub, params);
 }
 
-function onLoadAllClub(data, textStatus) {
-  window.all_club_full = data;
+function onLoadAllClub(r) {
+  window.all_club_full = r.data;
   window.all_club_coll = [];
-  $.each(data, function(i,val){all_club_coll[i]=val.name;});
+  $.each(r.data, function(i,val){all_club_coll[i]=val.name;});
 	//next we get the players
-  $.ajax({
-    type: "GET",
-    url: "http://localhost:8080/all/player", //TODO remove local
-    dataType: "json",
-    success: onLoadAllPlayer
-  });
+  var params = {};
+  params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+  var url = 'http://iplfnf1.appspot.com/all/player';
+  gadgets.io.makeRequest(url, onLoadAllPlayer, params);
 }
 
-function onLoadAllPlayer(data, textStatus) {
-  window.all_player_full = data;
+function onLoadAllPlayer(r) {
+  window.all_player_full = r.data;
   window.all_player_coll = [];
-  $.each(data, function(i,val){all_player_coll[i]=val.name;});
-  // we get all the matches
-  $.ajax({
-    type: "GET",
-    url: "http://localhost:8080/all/match", //TODO remove local
-    dataType: "json",
-    success: onLoadAllMatch
-  });
+  $.each(r.data, function(i,val){all_player_coll[i]=val.name;});
+  // we get all the latest facts
+  var params = {};
+  params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+  var url = 'http://iplfnf1.appspot.com/fact/get';
+  gadgets.io.makeRequest(url, onFactGet, params);
 }
 
-function onLoadAllMatch(data, textStatus) {
-  window.all_match_full = data;
-  // we finally get all the latest facts
-  $.ajax({
-    type: "POST",
-    url: "http://localhost:8080/fact/get", //TODO remove local
-    dataType: "json",
-    data: ({user_id : curr_user, fact_query : "latest", fact_page:curr_fact_page, fact_clubs:curr_fact_club, fact_players:curr_fact_player }), //TODO remove hardcoded
-    success: onFactGet
-  });
-}
-
-function onFactGet(data,textStatus){
+function onFactGet(r){
 		 hideLoading($('.loading'));
 		// show the fact container
 		$("#fact-container").show();
 		// iterate over each data > form markup > get user info from container > app info from the collections > append and slide
-		$.each(data, function(i,val){
+		$.each(r.data, function(i,val){
 			var mk = '';
-      var tags = '';
+            var tags = '';
 			var vw = 'vote-widget-active';
 			var vu = 'vote-up-off';
 			var vd = 'vote-down-off';

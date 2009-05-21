@@ -8,7 +8,7 @@ class Fact(db.Expando):
     content = db.TextProperty()
     total_vote_up = db.IntegerProperty()
     total_vote_down = db.IntegerProperty()
-    timestamp = db.TimeProperty(auto_now_add=True)
+    timestamp = db.DateTimeProperty(auto_now_add=True)
         
 class Fact_Vote(db.Model):
     fact = db.ReferenceProperty(Fact)
