@@ -20,8 +20,15 @@ class Admin:
   """init the db"""
 
   def init(self):
+    print 'hi'
+
     for club in Club.all():
-      print club.short_name
+      print club.name
+    for country in Country.all():
+      print country.name
+    for player in Player.all():
+      print player.name
+
 #
 #    for user in User.all():
 #      if user.id == 'sumeet':
@@ -38,8 +45,6 @@ class Admin:
 #          print match.team_two_name
 #          print '---'
 #          
-#    for club in Club.all():
-#      print club.name
 #    count = 0
 #    for match in Match.all():
 #      count +=1
