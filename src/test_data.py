@@ -22,13 +22,15 @@ class Admin:
   def init(self):
     print 'hi'
 
-    for club in Club.all():
-      print club.name
-    for country in Country.all():
-      print country.name
+#    for club in Club.all():
+#      print club.name
+#    for country in Country.all():
+#      print country.name
+    count = 1
     for player in Player.all():
-      print player.name
-
+      print count
+      count +=1
+    
 #
 #    for user in User.all():
 #      if user.id == 'sumeet':

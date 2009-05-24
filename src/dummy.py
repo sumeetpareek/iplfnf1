@@ -15,9 +15,9 @@ class DummyServer(webapp.RequestHandler):
 #      self._gen_fact_player()
 #      self._gen_fact_club()
 #      self._gen_fact_vote()
-      self._update_age()
+#      self._update_age()
 #      self._update_clubref()
-#      self._update_countryref()
+      self._update_countryref()
       #self._update_match_team_ref()
 
   def _gen_user(self):
@@ -113,7 +113,8 @@ class DummyServer(webapp.RequestHandler):
     self.response.out.write('all facts have now been voted upon')
   
   def _update_countryref(self):
-    for player in Player.all():
+    q = db.Query(Player).filter('country =', None).fetch(20)
+    for player in q:
       if (player.country == None):
         query = Country.all()
         query.filter('name =', player.country_name)
@@ -121,9 +122,12 @@ class DummyServer(webapp.RequestHandler):
         player.country = cref
         player.put()
     self.response.out.write('player country set')
+    if (q == None) :
+      self.response.out.write('--DONE') 
     
   def _update_clubref(self):
-    for player in Player.all():
+    q = db.Query(Player).filter('club =', None).fetch(20)
+    for player in q:
       if (player.club == None):
         query = Club.all()
         query.filter('name =', player.club_name)
@@ -133,7 +137,8 @@ class DummyServer(webapp.RequestHandler):
     self.response.out.write('player club set')
     
   def _update_age(self):
-    for player in Player.all():
+    q = db.Query(Player).filter('age =', None).fetch(20)
+    for player in q:
       if(player.age == 0 or player.age == None):
         pda1 = player.dob.year
         pda = datetime.date.today()
