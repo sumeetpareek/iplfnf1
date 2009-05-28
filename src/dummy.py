@@ -10,15 +10,16 @@ class DummyServer(webapp.RequestHandler):
   def get(self):
     """Handle GET requests."""
     if self.request.path.__eq__('/data/dummy_and_update'):
-      #self._gen_user()
+      print 'hi'
+#      self._gen_user()
 #      self._gen_fact()
 #      self._gen_fact_player()
 #      self._gen_fact_club()
 #      self._gen_fact_vote()
 #      self._update_age()
 #      self._update_clubref()
-      self._update_countryref()
-      #self._update_match_team_ref()
+#      self._update_countryref()
+#      self._update_match_team_ref()
 
   def _gen_user(self):
     for user in User.all():
@@ -113,7 +114,8 @@ class DummyServer(webapp.RequestHandler):
     self.response.out.write('all facts have now been voted upon')
   
   def _update_countryref(self):
-    q = db.Query(Player).filter('country =', None).fetch(20)
+    count = 0
+    q = db.Query(Player).filter('country =', None).fetch(10)
     for player in q:
       if (player.country == None):
         query = Country.all()
@@ -121,11 +123,11 @@ class DummyServer(webapp.RequestHandler):
         cref = query.get()
         player.country = cref
         player.put()
-    self.response.out.write('player country set')
-    if (q == None) :
-      self.response.out.write('--DONE') 
+        count += 1
+    self.response.out.write('player country set --' +str(count)+ ' <br>')
     
   def _update_clubref(self):
+    count = 0
     q = db.Query(Player).filter('club =', None).fetch(20)
     for player in q:
       if (player.club == None):
@@ -134,9 +136,11 @@ class DummyServer(webapp.RequestHandler):
         cref = query.get()
         player.club = cref
         player.put()
-    self.response.out.write('player club set')
+        count += 1
+    self.response.out.write('player club set --' +str(count)+ ' <br>')
     
   def _update_age(self):
+    count = 0
     q = db.Query(Player).filter('age =', None).fetch(20)
     for player in q:
       if(player.age == 0 or player.age == None):
@@ -144,7 +148,8 @@ class DummyServer(webapp.RequestHandler):
         pda = datetime.date.today()
         player.age = pda.year - pda1 
         player.put()
-    self.response.out.write('player age set')
+        count += 1
+    self.response.out.write('player age set --' +str(count)+ ' <br>')
     
   def _update_match_team_ref(self):
     for match in Match.all():

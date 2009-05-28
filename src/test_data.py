@@ -21,15 +21,27 @@ class Admin:
 
   def init(self):
     print 'hi'
+    count = 1
+    for fact in Fact.all():
+      print str(count) + '--'
+      print fact.content + '--'
+      print str(fact.total_vote_up) + '--'
+      print str(fact.total_vote_down)+ '--'
+      print '<br>'
+      count += 1
 
 #    for club in Club.all():
 #      print club.name
 #    for country in Country.all():
 #      print country.name
-    count = 1
-    for player in Player.all():
-      print count
-      count +=1
+#    count = 1
+#    for player in Player.all():
+#      print str(count) + '--'
+#      print player.name + '--'
+#      print str(player.age) + '--'
+#      print player.club.name + '--'
+#      print player.country.name + '--<br>'
+#      count += 1
     
 #
 #    for user in User.all():
