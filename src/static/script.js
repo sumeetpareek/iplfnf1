@@ -38,7 +38,7 @@ function onLoadAllClub(r) {
 	//next we get the players
   var params = {};
   params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
-  var url = 'http://iplfnf1.appspot.com/all/player';
+  var url = 'http://iplfnf1.appspot.com/all/players';
   gadgets.io.makeRequest(url, onLoadAllPlayer, params);
 }
 
@@ -47,10 +47,13 @@ function onLoadAllPlayer(r) {
   window.all_player_coll = [];
   $.each(r.data, function(i,val){all_player_coll[i]=val.name;});
   // we get all the latest facts
-  var params = {};
-  params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
-  var url = 'http://iplfnf1.appspot.com/fact/get';
-  gadgets.io.makeRequest(url, onFactGet, params);
+    var params = {
+      'methodType':'post',
+      'contentType':'json',
+      'postData':'user_id='+curr_user+'&fact_query=latest&fact_page=1'
+    };
+    var url = 'http://iplfnf1.appspot.com/fact/get';
+    gadgets.io.makeRequest(url, onFactGet, params);
 }
 
 function onFactGet(r){
@@ -118,6 +121,13 @@ function registerFunctions() {
     if ($(this).attr('title')=='Player'){curr_fact_player = $(this).attr('name');}
     //get what the current query_id is and send ajax request to get facts
     var query_id = $('#fact-tabs .active').attr('id');
+    var params = {
+      'methodType':'post',
+      'contentType':'json',
+      'postData':'data1=value1&data2=value2'
+    };
+    var url = 'http://iplfnf1.appspot.com/fact/get';
+    gadgets.io.makeRequest(url, onLoadAllCountry, params);
     $.ajax({
       type: "POST",
       url: "http://localhost:8080/fact/get", //TODO remove local
@@ -240,13 +250,18 @@ function registerFunctions() {
 			  }
 			});
             // we send a post request to set the fact
-            $.ajax({
-              type: "POST",
-              url: "http://localhost:8080/fact/set", //TODO remove local
-              dataType: "json",
-              data: ({fact_creator : curr_user, fact_content : $('#fact-add-content').val(), fact_clubs : clubs_arr.join(","), fact_players : players_arr.join(",")}), //TODO remove hardcoded
-              success: onFactSet
-            });
+    var params = {}
+    var postdata = {
+      fact_creator : curr_user,
+      fact_content : $('#fact-add-content').val(),
+      fact_clubs : clubs_arr.join(","),
+      fact_players : players_arr.join(",")
+    };
+    params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+    params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
+    params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(postdata); 
+    var url = 'http://iplfnf1.appspot.com/fact/set';
+    gadgets.io.makeRequest(url, onFactSet, params);
 		}
 		// if content is missing
 		else if (fact_valid == 'content-missing') {
@@ -318,6 +333,7 @@ function registerFunctions() {
 	$('#fact-add-wp textarea').blur(function(){
       setTimeout("if (fact_add_focus == false){restore_fact_add()};",300);
 	});
+
 }
 
 function restore_fact_add(){
@@ -373,8 +389,8 @@ function tags_valid(){
   return true;
 }
 
-function onFactSet(data,textStatus){
-  if (data[0].status == 'OK'){
+function onFactSet(r){
+  if (r.data[0].status == 'OK'){
 	// we show the message that fact is submitted
 	$('div.fact-submit-msg-wp .msg-y').html('Cricket gods accepted your fact :)');
 	// restore the entire fact-add region
@@ -384,8 +400,8 @@ function onFactSet(data,textStatus){
   var mk = '';
   var tags = '';
   // foreach tag that is returned we show them in a-tag by fetching the name
-  for (var i=0;i<data[0].tags.length;i++) {
-    var tag_detail = getTagDetail(data[0].tags[i]);
+  for (var i=0;i<r.data[0].tags.length;i++) {
+    var tag_detail = getTagDetail(r.data[0].tags[i]);
     if (tag_detail[0] == 'club'){
       tags += '<a href="#" title="Club" name="'+ all_club_full[tag_detail[1]].key +'" class="'+ all_club_full[tag_detail[1]].short_name +'">'+all_club_full[tag_detail[1]].name+'</a>';
     }
@@ -394,18 +410,18 @@ function onFactSet(data,textStatus){
     }
   }
   mk += '\
-        <div id="'+ data[0].key +'" class="fact-wp" style="display:none;background:#FFEE96 !important">\
+        <div id="'+ r.data[0].key +'" class="fact-wp" style="display:none;background:#FFEE96 !important">\
           <div class="uimg"></div>\
           <div class="fact-meta">\
-            <a class="uname" href="#">'+ data[0].creator +'</a>\
-            <span class="fact-time">at '+ data[0].timestamp +'</span>\
+            <a class="uname" href="#">'+ r.data[0].creator +'</a>\
+            <span class="fact-time">at '+ r.data[0].timestamp +'</span>\
           </div>\
           <div class="vote-widget vote-widget-active">\
-            <span class="vote-btn vote-up vote-up-off">I like this!</span><span class="vote-up-count">+'+ data[0].voteups +'</span>\
-            <span class="vote-btn vote-down vote-down-off">I hate this!</span><span class="vote-down-count">-'+ data[0].votedowns +'</span>\
+            <span class="vote-btn vote-up vote-up-off">I like this!</span><span class="vote-up-count">+'+ r.data[0].voteups +'</span>\
+            <span class="vote-btn vote-down vote-down-off">I hate this!</span><span class="vote-down-count">-'+ r.data[0].votedowns +'</span>\
             <span class="voting" style="display:none;">Registering your vote...</span>\
           </div>\
-          <div class="fact-content">'+ data[0].content +'</div>\
+          <div class="fact-content">'+ r.data[0].content +'</div>\
           <div class="cb"></div>\
               <div class="fact-relatedto">'+ tags +'</div>\
         </div>\
