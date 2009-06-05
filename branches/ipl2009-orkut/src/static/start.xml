@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?><Module>
-	<ModulePrefs title="IPL facts"
+	<ModulePrefs title="T20WC 2009 Facts"
                title_url="http://iplfnf1.appspot.com"
-               description="Great application.. very very good"
+               description="T20WC 2009 Facts.. very very good"
                author="Kaka"
                author_email="positivecharge@gmail.com"
                scaling="true"
@@ -29,7 +29,20 @@
     
 		<link rel="stylesheet" type="text/css" href="wick.css" />
 		<link rel="stylesheet" type="text/css" href="iplfnf.css" />
-
+    <script src="http://iplfnf1.appspot.com/static/jquery.js" type="text/javascript"></script>
+    <script src="http://iplfnf1.appspot.com/static/jquery.livequery.js" type="text/javascript"></script>
+    <script src="http://iplfnf1.appspot.com/static/wick.js" type="text/javascript"></script>
+    <script src="http://iplfnf1.appspot.com/static/script15.js" type="text/javascript"></script>
+    
+    <script>
+    gadgets.util.registerOnLoadHandler(init);
+    function init() {
+      showLoading($("#fnf-container"),"Aabra Ka Daabra..!! ");
+      registerFunctions();
+      startGettingData();
+    }
+    </script>
+    
 		<div id="fnf-wp">
 			
 			<div id="fnf-header">

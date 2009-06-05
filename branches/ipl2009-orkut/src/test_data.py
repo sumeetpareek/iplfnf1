@@ -23,8 +23,8 @@ class Admin:
     print 'hi'
     count = 1
     for fact in Fact.all():
-      print str(count) + '--'
-      print fact.content + '--'
+      print str(count) + '=='
+      print fact.content + '=='
       print str(fact.total_vote_up) + '--'
       print str(fact.total_vote_down)+ '--'
       print '<br>'
